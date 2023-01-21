@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 void main() {
   group('Grocery Application', () {
     final mainText = find.byValueKey('main');
-    late FlutterDriver driver;
+    FlutterDriver driver;
 
     setUpAll(() async {
       driver = await FlutterDriver.connect();
