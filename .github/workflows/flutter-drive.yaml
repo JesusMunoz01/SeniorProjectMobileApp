@@ -1,0 +1,32 @@
+name: CI Testing
+on: [ pull_request ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        device:
+        - "iPhone 12 Pro Max (15.0)"
+      fail-fast: true
+
+    runs-on: macOS-latest
+
+    steps:
+    - name: "Start Device"
+      run: |
+          IPHONE12=$(xcrun xctrace list devices  2>&1  | grep -m 1 "iPhone 12 Pro Max" | awk -F'[()]' '{print $4}')
+          xcrun simctl boot $IPHONE12
+    # The branch or tag ref that triggered the workflow will be 
+    # checked out.
+    # https://github.com/actions/checkout
+    - uses: actions/checkout@v3
+    # Sets up a flutter environment.
+    # https://github.com/marketplace/actions/flutter-action
+    - uses: subosito/flutter-action@v2
+      with:
+        architecture: x64
+        channel: 'stable'
+    - name: Run Unit Tests
+      run: flutter test
+    - name: "Run Driver Test"
+      run: "flutter drive --target=test_driver/app.dart"
