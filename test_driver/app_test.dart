@@ -17,10 +17,22 @@ void main() {
     });
 
     group("Template", () {
-      test("template test", () async {
-        final testVariable = find.byValueKey('templateKey');
-        final templateVar = "Template";
-        expect(templateVar, "Template");
+      test("basic path test", () async {
+        final screenTwoTestText = find.byValueKey('secondScreenTest');
+        final screenTwoButton = find.byValueKey("secondScreenButtonTest");
+        final mainScreenText = find.byValueKey("mainScreenText");
+        final mainScreenBudgetText = find.byValueKey("budgetText");
+        final mainScreenButton = find.byValueKey("mainScreenButton");
+        final mainScreenButtonText = find.byValueKey("buttonText");
+
+        expect(await driver.getText(screenTwoTestText), "Test Screen");
+        await driver.tap(screenTwoButton);
+
+        expect(await driver.getText(mainScreenText), "Test Screen");
+        expect(await driver.getText(mainScreenButtonText), "Test");
+        expect(await driver.getText(mainScreenBudgetText),
+            "User Budget\n\$${500}");
+        //await driver.tap(mainScreenButton);
       });
 
       test("template test", () async {
