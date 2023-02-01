@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "74692045485",
+    "project_id": "sp-app-1080",
+    "storage_bucket": "sp-app-1080.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:74692045485:android:6873a6e177383124f4b424",
+        "android_client_info": {
+          "package_name": "com.example.sp_grocery_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "74692045485-2si0iqbghcbphjq3tl5imlce3hc5njlj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlMAIvKB1X37nzB59Po-WUNvG58QzNeU8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "74692045485-2si0iqbghcbphjq3tl5imlce3hc5njlj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "74692045485-rn23945123op4j8tih6g4q0sj66gtnvb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.homebrewDripper"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
