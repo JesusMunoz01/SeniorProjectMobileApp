@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:sp_grocery_application/screens/mainScreen.dart';
 import 'package:sp_grocery_application/utils/API.dart';
 import 'package:sp_grocery_application/config/globals.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -17,13 +18,19 @@ class _MainScreenState extends State<MainScreen> {
   //  super.initState();
   //  futureP = GroceryAPI.fetchPrice(httpClient);
   //}
+  FirebaseDatabase database = FirebaseDatabase.instance;
+  DatabaseReference myRef = FirebaseDatabase.instance.ref();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           actions: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+            IconButton(
+                onPressed: () async {
+                  await myRef.set({"username": "James"});
+                },
+                icon: Icon(Icons.search)),
             IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
             IconButton(onPressed: () {}, icon: Icon(Icons.shopping_bag))
           ],
