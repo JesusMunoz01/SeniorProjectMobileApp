@@ -36,7 +36,7 @@ void main() {
         await driver.tap(screenTwoLoginButton);
         await driver.tap(screenTwoButton);
 
-        expect(await driver.getText(mainScreenText), "Test Screen");
+        expect(await driver.getText(mainScreenText), "Recommended");
         expect(await driver.getText(mainScreenButtonText), "Test");
         expect(await driver.getText(mainScreenBudgetText),
             "User Budget\n\$${500}");
