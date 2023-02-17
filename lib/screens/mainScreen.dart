@@ -4,6 +4,7 @@ import 'package:sp_grocery_application/screens/mainScreen.dart';
 import 'package:sp_grocery_application/utils/API.dart';
 import 'package:sp_grocery_application/config/globals.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:sp_grocery_application/utils/itemDatabase.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -19,16 +20,27 @@ class _MainScreenState extends State<MainScreen> {
   //  futureP = GroceryAPI.fetchPrice(httpClient);
   //}
   FirebaseDatabase database = FirebaseDatabase.instance;
-  DatabaseReference myRef = FirebaseDatabase.instance.ref();
-
+  //DatabaseReference myRef = FirebaseDatabase.instance.ref("profiles");
+  DatabaseReference newMyRef = FirebaseDatabase.instance.ref("items").push();
+  ItemDatabase testItem = product1();
+  List<ItemDatabase> testItems = getItem();
+  /*
+                  onPressed: () async {
+                  await newMyRef.set({
+                    "item": testItem.name,
+                    "id": testItem.id,
+                    "price": testItem.price
+                  });
+                },
+  */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           actions: [
             IconButton(
-                onPressed: () async {
-                  await myRef.set({"username": "Jesus"});
+                onPressed: () {
+                  showSearch(context: context, delegate: CustomSearch());
                 },
                 icon: Icon(Icons.search)),
             IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
@@ -53,21 +65,62 @@ class _MainScreenState extends State<MainScreen> {
             ),
             --------------------------------*/
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 100, 0, 0),
+                padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
                 child: Text(
-                  "User Budget\n\$${500}",
+                  "User Budget\n" + "\$${500}",
+                  textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 24, fontFamily: 'Montserrat'),
                   key: Key("budgetText"),
                 ),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 200, 0, 0),
+                padding: EdgeInsets.fromLTRB(0, 40, 0, 0),
                 child: Text(
-                  "Test Screen",
+                  "Recommended",
                   style: TextStyle(fontSize: 18, fontFamily: 'Montserrat'),
                   key: Key("mainScreenText"),
                 ),
               ),
+              Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 10)),
+              for (ItemDatabase item in testItems)
+                ListTile(
+                  title: Container(
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                        Text(item.name),
+                        Spacer(),
+                        Text("\$" + item.price.toString() + "\t"),
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: Size(20, 20)),
+                            onPressed: () {},
+                            child: Text(
+                              "-",
+                              textScaleFactor: 1,
+                            )),
+                        Container(
+                          child: Column(
+                            children: [
+                              Text(
+                                "QTY:",
+                                textScaleFactor: 0.75,
+                              ),
+                              Text(
+                                "1",
+                                textScaleFactor: 0.75,
+                              )
+                            ],
+                          ),
+                        ),
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: Size(20, 20)),
+                            onPressed: () {},
+                            child: Text("+"))
+                      ])),
+                  //onTap: () {},
+                ),
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 100, 0, 0),
                 child: ElevatedButton(
@@ -93,5 +146,121 @@ class _MainScreenState extends State<MainScreen> {
             label: 'Items',
           ),
         ]));
+  }
+}
+
+class CustomSearch extends SearchDelegate {
+  List<ItemDatabase> items = getItem();
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+          onPressed: () {
+            query = '';
+          },
+          icon: Icon(Icons.clear)),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+        onPressed: () {
+          close(context, null);
+        },
+        icon: Icon(Icons.backspace));
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    List<String> match = [];
+    var result;
+    int counter = 0;
+    ItemDatabase item;
+    int length = 0;
+    for (var item in items) {
+      if (item.name.toLowerCase().contains(query.toLowerCase())) {
+        match.add(item.name);
+        length++;
+      }
+    }
+    return ListView.builder(
+        itemCount: length,
+        itemBuilder: (context, int index) {
+          result = match[index];
+          item = items[index];
+          int counter = 0;
+          for (ItemDatabase i in items) {
+            if (i.name.toLowerCase().contains(match[index].toLowerCase())) {
+              item = items[counter];
+            }
+            counter++;
+          }
+          return new ListTile(
+            title: Container(
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                  Text(item.name),
+                  Spacer(),
+                  Text("\$" + item.price.toString() + "\t"),
+                  ElevatedButton(
+                      style:
+                          ElevatedButton.styleFrom(minimumSize: Size(20, 20)),
+                      onPressed: () {},
+                      child: Text(
+                        "-",
+                        textScaleFactor: 1,
+                      )),
+                  Container(
+                    child: Column(
+                      children: [
+                        Text(
+                          "QTY:",
+                          textScaleFactor: 0.75,
+                        ),
+                        Text(
+                          "1",
+                          textScaleFactor: 0.75,
+                        )
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                      style:
+                          ElevatedButton.styleFrom(minimumSize: Size(20, 20)),
+                      onPressed: () {},
+                      child: Text("+"))
+                ])),
+            //onTap: () {},
+          );
+        });
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<String> match = [];
+    String result;
+    int length = 0;
+    for (var item in items) {
+      if (item.name.toLowerCase().contains(query.toLowerCase())) {
+        match.add(item.name);
+        length++;
+      }
+    }
+    return ListView.builder(
+      itemCount: length,
+      itemBuilder: (context, index) {
+        result = match[index];
+        return new GestureDetector(
+          onTap: () {
+            query = match[index];
+            showResults(context);
+          },
+          child: ListTile(title: Text("${result}")),
+        );
+      },
+    );
   }
 }

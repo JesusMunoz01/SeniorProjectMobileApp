@@ -11,8 +11,7 @@ class UserDatabase {
 }
 
 UserDatabase user1(String name, String username, String uid, String password,
-int itemCount, double height, int age, double weight, double balance)
-{
+    int itemCount, double height, int age, double weight, double balance) {
   name = "Sunday Molina";
   username = "sunmo54";
   uid = "z1";
