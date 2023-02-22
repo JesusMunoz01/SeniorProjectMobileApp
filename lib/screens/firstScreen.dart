@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:sp_grocery_application/screens/secondScreen.dart';
+import 'package:sp_grocery_application/screens/loginScreen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -20,15 +20,13 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   navigateToDeviceScreen() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => SecondScreen()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => SecondScreen()));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
- 
-    );
+    return Scaffold();
   }
 }
 /*
