@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:sp_grocery_application/screens/mainScreen.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'mainScreen.dart';
 
-class SecondScreen extends StatelessWidget {
+class SecondScreen extends StatefulWidget {
+  @override
+  _SecondScreenState createState() => _SecondScreenState();
+}
+
+class _SecondScreenState extends State<SecondScreen> {
   TextEditingController _username = TextEditingController();
   TextEditingController _password = TextEditingController();
+  @override
+  FirebaseDatabase database = FirebaseDatabase.instance;
+  DatabaseReference myRef = FirebaseDatabase.instance.ref("profiles/username");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,8 +67,12 @@ class SecondScreen extends StatelessWidget {
                     'Login',
                     key: Key("loginTextButton"),
                   ),
-                  onPressed: () {
-                    if (_password.text.length > 8) {
+                  onPressed: () async {
+                    final snapshot = await FirebaseDatabase.instance
+                        .ref("profiles/username")
+                        .get();
+                    if (_username == snapshot.value.toString() &&
+                        _password.text.length > 8) {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
