@@ -27,13 +27,28 @@ class _createAccScreenState extends State<createAccScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          key: Key("createAccBack"),
+          icon: Icon(
+            Icons.keyboard_backspace,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        elevation: 0,
+        foregroundColor: Colors.black,
+      ),
       body: Center(
         child: Column(
           children: [
             Padding(
               padding: EdgeInsets.fromLTRB(20, 200, 20, 0),
               child: Text(
-                "Create An Account",
+                "Create an Account",
                 key: Key("createAccScreenText"),
                 style: TextStyle(fontSize: 18, fontFamily: 'Montserrat'),
               ),
@@ -44,7 +59,7 @@ class _createAccScreenState extends State<createAccScreen> {
             Container(
               padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
               child: TextField(
-                key: Key("createAccUsernameTextField"),
+                key: Key("createAccUsernameField"),
                 controller: _username,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -58,7 +73,7 @@ class _createAccScreenState extends State<createAccScreen> {
             Container(
               padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
               child: TextField(
-                key: Key("createAccPasswordTextField"),
+                key: Key("createAccPasswordField"),
                 obscureText: true,
                 controller: _password,
                 decoration: const InputDecoration(
