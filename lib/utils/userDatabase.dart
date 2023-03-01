@@ -21,4 +21,5 @@ UserDatabase user1(String name, String username, String uid, String password,
   age = 76;
   weight = 223.7;
   balance = 1550;
+  List <String> itemList = ["Doritos", "Donitas", "Nesquik", "Snickers", "Shmucker's Uncrusted"];
 }
