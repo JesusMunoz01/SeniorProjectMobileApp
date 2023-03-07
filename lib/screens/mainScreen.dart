@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:sp_grocery_application/screens/itemsScreen.dart';
 import 'package:sp_grocery_application/screens/mainScreen.dart';
+import 'package:sp_grocery_application/screens/settingsScreen.dart';
 import 'package:sp_grocery_application/utils/API.dart';
 import 'package:sp_grocery_application/config/globals.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -17,15 +18,17 @@ class _MainScreenState extends State<MainScreen> {
   Future<String> futureP;
   String money;
   @override
-  //void initState() {
-  //  super.initState();
-  //  futureP = GroceryAPI.fetchPrice(httpClient);
-  //}
+  void initState() {
+    super.initState();
+    futureP = GroceryAPI.fetchPrice(httpClient, testItem.id);
+  }
+
   FirebaseDatabase database = FirebaseDatabase.instance;
   //DatabaseReference myRef = FirebaseDatabase.instance.ref("profiles");
   DatabaseReference newMyRef = FirebaseDatabase.instance.ref("items").push();
   ItemDatabase testItem = product1();
   List<ItemDatabase> testItems = getItem();
+  static double price;
 
   /*  ------------Database Push--------
                 onPressed: () async {
@@ -156,6 +159,20 @@ class _MainScreenState extends State<MainScreen> {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                  FutureBuilder<String>(
+                    future: GroceryAPI.fetchPrice(httpClient, item.id),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        item.price = double.parse(snapshot.data);
+                        price = item.price;
+                        item.setPrice(price);
+                        return Text("${price}");
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      }
+                      return CircularProgressIndicator();
+                    },
+                  ),
                   Text(item.name),
                   Spacer(),
                   Text("\$" + item.price.toString() + "\t"),
@@ -282,7 +299,14 @@ class _MainScreenState extends State<MainScreen> {
                   showSearch(context: context, delegate: CustomSearch());
                 },
                 icon: Icon(Icons.search)),
-            IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SettingsScreen()));
+                },
+                icon: Icon(Icons.settings)),
             IconButton(onPressed: () {}, icon: Icon(Icons.shopping_bag))
           ],
         ),
@@ -318,6 +342,7 @@ class CustomSearch extends SearchDelegate {
       IconButton(
           onPressed: () {
             query = '';
+            showSearch(context: context, delegate: CustomSearch());
           },
           icon: Icon(Icons.clear)),
     ];
