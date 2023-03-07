@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-/*
+
 class GroceryAPI {
-  static Future<String> fetchPrice(http.Client client) async {
+  static Future<String> fetchPrice(http.Client client, String itemID) async {
     var url = Uri.parse(
-      'https://api.bls.gov/publicAPI/v1/timeseries/data/APU0000701111',
+      'https://api.bls.gov/publicAPI/v1/timeseries/data/APU0000${itemID}',
     );
     final response = await client.get(url);
 
@@ -16,4 +16,3 @@ class GroceryAPI {
     }
   }
 }
-*/

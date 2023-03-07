@@ -8,33 +8,40 @@ class ItemDatabase {
     this.id = id;
     this.price = price;
   }
+
+  setPrice(price) {
+    this.price = price;
+  }
 }
 
 ItemDatabase product1() {
-  ItemDatabase p1 = ItemDatabase("Flour", "1a", 2.67);
+  ItemDatabase p1 = ItemDatabase("Flour", "701111", 0.0);
   return p1;
 }
 
 ItemDatabase product2() {
-  ItemDatabase product = ItemDatabase("Ground Beef", "1b", 7.59);
+  ItemDatabase product = ItemDatabase("Ground Beef", "703112", 0.0);
   return product;
 }
 
 ItemDatabase product3() {
-  ItemDatabase product = ItemDatabase("Granola Bar Pack", "1c", 5.40);
+  ItemDatabase product = ItemDatabase("Rice", "701312", 0.0);
   return product;
 }
 
 ItemDatabase product4() {
-  ItemDatabase product = ItemDatabase("Milk", "2a", 3.12);
+  ItemDatabase product = ItemDatabase("Bread", "702111", 0.0);
   return product;
 }
 
 ItemDatabase product5() {
-  ItemDatabase product = ItemDatabase("Mango", "2b", 1.52);
+  ItemDatabase product = ItemDatabase("Ham", "704311", 0.0);
   return product;
 }
 
 List<ItemDatabase> getItem() {
-  return [product1(), product2(), product3(), product4(), product5()];
+  return [
+    product1(),
+    product2() /*product3(), product4(), product5()*/
+  ];
 }
