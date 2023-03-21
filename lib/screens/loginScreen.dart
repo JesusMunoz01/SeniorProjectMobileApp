@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sp_grocery_application/screens/createAccScreen.dart';
 import 'package:sp_grocery_application/screens/mainScreen.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:sp_grocery_application/utils/itemDatabase.dart';
 import 'mainScreen.dart';
 
 class SecondScreen extends StatefulWidget {
@@ -15,6 +16,8 @@ class _SecondScreenState extends State<SecondScreen> {
   @override
   FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference myRef = FirebaseDatabase.instance.ref("profiles/username");
+  DatabaseReference data = FirebaseDatabase.instance.ref("items");
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

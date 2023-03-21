@@ -15,15 +15,7 @@ class _createAccScreenState extends State<createAccScreen> {
   @override
   FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference newMyRef = FirebaseDatabase.instance.ref("profiles");
-  /*
-                  onPressed: () async {
-                  await newMyRef.set({
-                    "item": testItem.name,
-                    "id": testItem.id,
-                    "price": testItem.price
-                  });
-                },
-  */
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
