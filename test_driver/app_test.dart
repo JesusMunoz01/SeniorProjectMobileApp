@@ -79,7 +79,9 @@ void main() {
         expect(await driver.getText(mainScreenButtonText), "Test");
         expect(await driver.getText(mainScreenBudgetText),
             "User Budget\n\$${500}");
-
+        
+        
+        await driver.scrollIntoView(mainScreenButton);
         await driver.tap(mainScreenButton);
         await driver.waitFor(tab);
         await driver.tap(find.text('Items'));
@@ -88,6 +90,7 @@ void main() {
         expect(await driver.getText(itemsScreenText), "Items");
         expect(await driver.getText(itemsButtonText), "Add");
 
+        await driver.scrollIntoView(itemsScreenButton);
         await driver.tap(itemsScreenButton);
       });
 
