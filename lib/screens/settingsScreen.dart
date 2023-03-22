@@ -18,95 +18,44 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          
+        ]
+      ),
       body: Center(
         child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(20, 200, 20, 0),
-              child: Text(
-                "Settings",
-                key: Key("settingsScreenTest"),
-                style: TextStyle(fontSize: 18, fontFamily: 'Montserrat'),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 80, 0, 0),
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
-              child: TextField(
-                key: Key("usernameTextField"),
-                controller: _username,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  label: Text(
-                    'Username',
-                    key: Key("usernameText"),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
-              child: TextField(
-                key: Key("passwordTextField"),
-                obscureText: true,
-                controller: _password,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  label: Text(
-                    'Password',
-                    key: Key("passwordText"),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-                height: 50,
-                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: ElevatedButton(
-                  key: Key("loginButton"),
-                  child: const Text(
-                    'Login',
-                    key: Key("loginTextButton"),
-                  ),
-                  onPressed: () async {
-                    final snapshot = await FirebaseDatabase.instance
-                        .ref("profiles/${_username.text}/username")
-                        .get();
-                    final passSnapshot = await FirebaseDatabase.instance
-                        .ref("profiles/${_username.text}/password")
-                        .get();
-                    if (_username.text == snapshot.value.toString() &&
-                        _password.text.length > 8 &&
-                        _password.text == passSnapshot.value.toString()) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MainScreen()));
-                    }
-                  },
-                )),
-            Container(
-              padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => createAccScreen()));
-                },
-                child: Text(
-                  "Create an Account",
-                  style: TextStyle(color: Colors.blue),
-                  key: Key("createAccText"),
-                ),
-                key: Key("createAccButton"),
-              ),
-            )
+          children: [Padding(padding: EdgeInsets.fromLTRB(0, 50, 0, 0)), 
+          Text("Settings", style: TextStyle(fontSize: 24, fontFamily: 'Montserrat')),
+          Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 50)),
+          ListTile(title: 
+              Text("Personal Info", textAlign: TextAlign.center,),
+              onTap:() {
+                
+              },
+          ),
+          ListTile(title: 
+              Text("Budget", textAlign: TextAlign.center,),
+              onTap:() {
+                
+              },
+          ),
+          ListTile(title: 
+              Text("Logout", textAlign: TextAlign.center),
+              onTap:() {
+                
+              },
+          ),
+          Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 350)),
+          ListTile(title: 
+              Text("Delete Account", textAlign: TextAlign.center, style: TextStyle(color: Color.fromARGB(255, 184, 13, 1)),),
+              onTap:() {
+                
+              },
+          ),
           ],
         ),
-      ),
+      ),   
     );
   }
 }
