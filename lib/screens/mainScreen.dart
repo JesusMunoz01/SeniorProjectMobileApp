@@ -68,7 +68,7 @@ class _MainScreenState extends State<MainScreen> {
     FutureBuilder<dynamic>(
       future: futureU,
       initialData: null,
-      builder: (context, newSnapshot) {
+      builder: (context, AsyncSnapshot newSnapshot) {
       if (newSnapshot.hasData && newSnapshot.connectionState == ConnectionState.done) {
         Map map = newSnapshot.data;
                 return ListView( children: [
@@ -177,7 +177,7 @@ class _MainScreenState extends State<MainScreen> {
                 FutureBuilder<dynamic>(
                   future: futureI,
                   initialData: null,
-                  builder: (context, snapshot) {
+                  builder: (context, AsyncSnapshot snapshot) {
                   if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
                     //itemList = snapshot.data;
                     //List<dynamic> set = itemList.map((itemList) => itemList['item'] as dynamic).toList();
@@ -320,6 +320,9 @@ class _MainScreenState extends State<MainScreen> {
             setState(() {
               _index = value;
             });
+            if(_index != 1){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen(widget.user)));
+            }
           },
         ));
   }
