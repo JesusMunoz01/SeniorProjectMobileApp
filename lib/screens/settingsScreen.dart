@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sp_grocery_application/screens/createAccScreen.dart';
+import 'package:sp_grocery_application/screens/loginScreen.dart';
 import 'package:sp_grocery_application/screens/mainScreen.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'mainScreen.dart';
@@ -50,7 +51,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(title: 
               Text("Delete Account", textAlign: TextAlign.center, style: TextStyle(color: Color.fromARGB(255, 184, 13, 1)),),
               onTap:() {
-                
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: ((context) => SecondScreen())));
               },
           ),
           ],
