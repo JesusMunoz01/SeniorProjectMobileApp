@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sp_grocery_application/screens/createAccScreen.dart';
+import 'package:sp_grocery_application/screens/infoScreen.dart';
 import 'package:sp_grocery_application/screens/mainScreen.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:sp_grocery_application/utils/itemDatabase.dart';
@@ -86,7 +87,7 @@ class _SecondScreenState extends State<SecondScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MainScreen(_username.text)));
+                              builder: (context) => InfoScreen(_username.text)));
                     }
                   },
                 )),
