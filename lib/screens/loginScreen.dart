@@ -87,7 +87,7 @@ class _SecondScreenState extends State<SecondScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => InfoScreen(_username.text)));
+                              builder: (context) => MainScreen(_username.text)));
                     }
                   },
                 )),
