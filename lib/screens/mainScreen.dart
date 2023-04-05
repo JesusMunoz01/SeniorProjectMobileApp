@@ -18,6 +18,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _index = 0;
+  int qty = 0;
   Future<String> futureP;
   Future<dynamic> futureI;
   Future<dynamic> futureU;
@@ -68,7 +69,7 @@ class _MainScreenState extends State<MainScreen> {
       future: futureU,
       initialData: null,
       builder: (context, newSnapshot) {
-      if (newSnapshot.hasData) {
+      if (newSnapshot.hasData && newSnapshot.connectionState == ConnectionState.done) {
         Map map = newSnapshot.data;
                 return ListView( children: [
                 Column(
@@ -92,13 +93,13 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 10)),
                     for(var r in map.values)
-                      //if(itemNum > 0)
+                      if(r["isFav"] == true)
                       ListTile(
                         title: Container(
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                            // if(update == true && itemNum < 2)
+                            // if(update == true && itemNum < 5)
                             //   FutureBuilder<String>(
                             //     future: GroceryAPI.fetchPrice(httpClient, r["id"]),
                             //     builder: (context, snapshot) {
@@ -106,7 +107,7 @@ class _MainScreenState extends State<MainScreen> {
                             //         DatabaseReference setAPIPrice = FirebaseDatabase.instance.ref("items/itemList/${itemNum}");
                             //         setAPIPrice.update({"price": double.parse(snapshot.data)});
                             //         itemNum++;
-                            //         //update = false;
+                            //         update = false;
                             //        } else if (snapshot.hasError) {
                             //          return Text('${snapshot.error}');
                             //        }
@@ -119,7 +120,11 @@ class _MainScreenState extends State<MainScreen> {
                               ElevatedButton(
                                   style:
                                       ElevatedButton.styleFrom(minimumSize: Size(10, 15)),
-                                  onPressed: () async {},
+                                  onPressed: () {
+                                    setState(() {
+                                      qty--;
+                                    });
+                                  },
                                   child: Text(
                                     "-",
                                     textScaleFactor: 1,
@@ -132,7 +137,7 @@ class _MainScreenState extends State<MainScreen> {
                                       textScaleFactor: 0.75,
                                     ),
                                     Text(
-                                      "${r["amount"]}",
+                                      "${qty}",
                                       textScaleFactor: 0.75,
                                     )
                                   ],
@@ -141,14 +146,10 @@ class _MainScreenState extends State<MainScreen> {
                               ElevatedButton(
                                   style:
                                       ElevatedButton.styleFrom(minimumSize: Size(10, 15)),
-                                  onPressed: () async{
-                                    int amount = r["amount"];
+                                  onPressed: () {
                                     setState(() {
-                                      amount++;
+                                      qty++;
                                     });
-                                    final snapshot = await FirebaseDatabase.instance
-                                    .ref("profiles/${widget.user}/items/${r["id"]}");        
-                                    await snapshot.update({"item":r["item"], "id":r["id"], "price":r["price"], "amount": amount});
                                   },
                                   child: Text("+"))
                             ])),
@@ -177,7 +178,7 @@ class _MainScreenState extends State<MainScreen> {
                   future: futureI,
                   initialData: null,
                   builder: (context, snapshot) {
-                  if (snapshot.hasData) {
+                  if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
                     //itemList = snapshot.data;
                     //List<dynamic> set = itemList.map((itemList) => itemList['item'] as dynamic).toList();
                     List<dynamic> set = snapshot.data as List<dynamic>;
@@ -215,16 +216,23 @@ class _MainScreenState extends State<MainScreen> {
                             //        return CircularProgressIndicator();
                             //      },
                             //    ),
+                              
                               IconButton(onPressed: () async{
+                                setState((){
+                                  fav = !fav;
+                                  
+                              });
                                 if(fav == true){
                                     final snapshot = await FirebaseDatabase.instance
                                     .ref("profiles/${widget.user}/items/${r["id"]}");
                                     await snapshot.update({"isFav": true, "item":r["item"], "id":r["id"], "price":r["price"]});
+                                }else{
+                                  final snapshot = await FirebaseDatabase.instance
+                                    .ref("profiles/${widget.user}/items/${r["id"]}");
+                                    await snapshot.update({"isFav": false, "item":r["item"], "id":r["id"], "price":r["price"]});
                                 };
-                                setState((){
-                                  fav = !fav; 
-                              });
-                              ;}, icon: this.fav ? Icon(Icons.favorite_border) : Icon(Icons.favorite)),
+                              ;}, 
+                              icon: fav ? Icon(Icons.favorite) : Icon(Icons.favorite_border)),
                               Text(r["item"], textScaleFactor: 0.75,),
                               Spacer(),
                               Text("\$" + r["price"].toString() + "\t", textScaleFactor: 0.85,),
