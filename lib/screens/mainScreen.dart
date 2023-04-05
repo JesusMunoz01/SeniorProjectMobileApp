@@ -22,6 +22,7 @@ class _MainScreenState extends State<MainScreen> {
   Future<String> futureP;
   Future<dynamic> futureI;
   Future<dynamic> futureU;
+  double budget;
   String money;
   int itemNum = 0;
   bool update = true;
@@ -43,6 +44,12 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  databaseBudget() async{
+  final ref = FirebaseDatabase.instance.ref();
+  final budget = await FirebaseDatabase.instance.ref("profiles/${widget.user}/Budget").get();
+    return double.parse(budget.value);
+  }
+
   databaseSingleFav() async{
   final ref1 = FirebaseDatabase.instance.ref();
   final snapshot1 = await ref1.child('profiles/${widget.user}/items').get();
@@ -62,7 +69,6 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
   // List containing two screens (Home and Items)
-
   List<Widget> _widgets = <Widget>[
     //--------------Main Screen Section (Home tab)--------------
     FutureBuilder<dynamic>(
