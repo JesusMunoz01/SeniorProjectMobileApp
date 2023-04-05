@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sp_grocery_application/screens/createAccScreen.dart';
+import 'package:sp_grocery_application/screens/loginScreen.dart';
 import 'package:sp_grocery_application/screens/mainScreen.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'mainScreen.dart';
@@ -43,7 +44,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(title: 
               Text("Logout", textAlign: TextAlign.center),
               onTap:() {
-                
+                Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SecondScreen()));
               },
           ),
           Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 350)),
