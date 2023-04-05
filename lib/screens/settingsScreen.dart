@@ -44,7 +44,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(title: 
               Text("Logout", textAlign: TextAlign.center),
               onTap:() {
-                
+                Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SecondScreen()));
               },
           ),
           Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 350)),
