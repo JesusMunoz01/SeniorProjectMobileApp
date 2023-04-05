@@ -54,7 +54,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(title: 
               Text("Delete Account", textAlign: TextAlign.center, style: TextStyle(color: Color.fromARGB(255, 184, 13, 1)),),
               onTap:() {
-                
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: ((context) => SecondScreen())));
               },
           ),
           ],
