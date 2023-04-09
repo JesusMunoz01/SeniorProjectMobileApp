@@ -81,9 +81,10 @@ void main() {
             "User Budget\n\$${500}");
         
         
-        await driver.scrollIntoView(mainScreenButton);
+        //await driver.scrollIntoView(mainScreenButton);
         await driver.tap(mainScreenButton);
         await driver.waitFor(tab);
+        await driver.tap(find.text('Home'));
         await driver.tap(find.text('Items'));
 
         // Items screen section
@@ -92,6 +93,7 @@ void main() {
 
         await driver.scrollIntoView(itemsScreenButton);
         await driver.tap(itemsScreenButton);
+        
       });
 
       //Logged in path

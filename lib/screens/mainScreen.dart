@@ -10,6 +10,7 @@ import 'package:sp_grocery_application/utils/itemDatabase.dart';
 import 'package:sp_grocery_application/utils/userDatabase.dart';
 
 class MainScreen extends StatefulWidget {
+  UserDatabase local = UserDatabase();
   String user;
   MainScreen(this.user);
   @override
@@ -28,6 +29,9 @@ class _MainScreenState extends State<MainScreen> {
   bool update = true;
   String id = "701111";
   bool fav = false;
+  Set<String> favItems = Set<String>();
+  Set<String> localFav = Set<String>();
+  Set<String> itemCount = Set<String>();
   @override
   void initState() {
     super.initState();
@@ -77,8 +81,7 @@ class _MainScreenState extends State<MainScreen> {
       builder: (context, AsyncSnapshot newSnapshot) {
       if (newSnapshot.hasData && newSnapshot.connectionState == ConnectionState.done) {
         Map map = newSnapshot.data;
-                return ListView( children: [
-                Column(
+                return Column(
                   children: [
                     Padding(
                       padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
@@ -98,31 +101,23 @@ class _MainScreenState extends State<MainScreen> {
                       ),
                     ),
                     Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 10)),
-                    for(var r in map.values)
-                      if(r["isFav"] == true)
-                      ListTile(
-                        title: Container(
+                    SizedBox(height: 500,child:
+                      ListView.builder( 
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: map.length,
+                      itemBuilder:(context, index) {
+                        String key = map.keys.elementAt(index);
+                        if(map[key]["isFav"] == false)
+                        return Container();
+                        else
+                        return Container(
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                            // if(update == true && itemNum < 5)
-                            //   FutureBuilder<String>(
-                            //     future: GroceryAPI.fetchPrice(httpClient, r["id"]),
-                            //     builder: (context, snapshot) {
-                            //       if (snapshot.hasData && itemNum < 2) {
-                            //         DatabaseReference setAPIPrice = FirebaseDatabase.instance.ref("items/itemList/${itemNum}");
-                            //         setAPIPrice.update({"price": double.parse(snapshot.data)});
-                            //         itemNum++;
-                            //         update = false;
-                            //        } else if (snapshot.hasError) {
-                            //          return Text('${snapshot.error}');
-                            //        }
-                            //        return CircularProgressIndicator();
-                            //      },
-                            //    ),
-                              Text(r["item"], textScaleFactor: 0.75,),
+                              Text("${map[key]["item"]}", textScaleFactor: 0.75,),
                               Spacer(),
-                              Text("\$" + r["price"].toString() + "\t", textScaleFactor: 0.85,),
+                              Text("\$" + map[key]["price"].toString() + "\t", textScaleFactor: 0.85,),
                               ElevatedButton(
                                   style:
                                       ElevatedButton.styleFrom(minimumSize: Size(10, 15)),
@@ -158,11 +153,11 @@ class _MainScreenState extends State<MainScreen> {
                                     });
                                   },
                                   child: Text("+"))
-                            ])),
+                            ]));
                         //onTap: () {},
-                      ),
+                      })),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0, 50, 0, 50),
+                      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(minimumSize: Size(100, 50)),
                         key: Key("mainScreenButton"),
@@ -174,7 +169,7 @@ class _MainScreenState extends State<MainScreen> {
                       ),
                     ),
                   ],
-                )]);
+                );
       }
       return CircularProgressIndicator();}),
                 // ---------End of Main Screen section (Home Tab)-----------
@@ -188,11 +183,10 @@ class _MainScreenState extends State<MainScreen> {
                     //itemList = snapshot.data;
                     //List<dynamic> set = itemList.map((itemList) => itemList['item'] as dynamic).toList();
                     List<dynamic> set = snapshot.data as List<dynamic>;
-                return ListView( children: [
-                Column(
-                  children: [
+                return Column(
+                  children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
+                      padding: EdgeInsets.fromLTRB(0, 50, 0, 30),
                       child: Text(
                         "Items",
                         textAlign: TextAlign.center,
@@ -200,10 +194,23 @@ class _MainScreenState extends State<MainScreen> {
                         key: Key("itemsMainText"),
                       ),
                     ),
+                  SizedBox(height: 580,child:
+                  ListView.builder( 
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  itemCount: set.length,
+                  itemBuilder:(context, index) {
+                   bool first = true;
+                   bool pressed = favItems.contains(set[index]["id"]);
+                   localFav = widget.local.favItems;
+                   bool localP = localFav.contains(set[index]["id"]);
+                    return Column(
+                  children: [
                     Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 10)),
-                    for(var r in set)
-                      ListTile(
-                        title: Container(
+                    //for(var r in set)
+                      //ListTile(
+                        //title: 
+                        Container(
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -223,25 +230,35 @@ class _MainScreenState extends State<MainScreen> {
                             //      },
                             //    ),
                               
-                              IconButton(onPressed: () async{
+                              IconButton(onPressed: () async{   
+                                final ref1 = FirebaseDatabase.instance.ref();
+                                final favorite = await ref1.child("profiles/${widget.user}/items/${set[index]["id"]}").get();
+                                Map favo = favorite.value;
+
                                 setState((){
-                                  fav = !fav;
-                                  
-                              });
-                                if(fav == true){
+                                  if(pressed || localP){
+                                    widget.local.favItems.remove(set[index]['id']);
+                                    favItems.remove(set[index]['id']); 
+                                  }else{
+                                    widget.local.favItems.add(set[index]['id']);
+                                    favItems.add(set[index]['id']); 
+                                  }              
+                                  });
+                                
+                                if(!pressed || !localP){
                                     final snapshot = await FirebaseDatabase.instance
-                                    .ref("profiles/${widget.user}/items/${r["id"]}");
-                                    await snapshot.update({"isFav": true, "item":r["item"], "id":r["id"], "price":r["price"]});
+                                    .ref("profiles/${widget.user}/items/${set[index]["id"]}");
+                                    await snapshot.update({"isFav": true, "item":set[index]["item"], "id":set[index]["id"], "price":set[index]["price"]});
                                 }else{
                                   final snapshot = await FirebaseDatabase.instance
-                                    .ref("profiles/${widget.user}/items/${r["id"]}");
-                                    await snapshot.update({"isFav": false, "item":r["item"], "id":r["id"], "price":r["price"]});
+                                    .ref("profiles/${widget.user}/items/${set[index]["id"]}");
+                                    await snapshot.update({"isFav": false, "item":set[index]["item"], "id":set[index]["id"], "price":set[index]["price"]});
                                 };
                               ;}, 
-                              icon: fav ? Icon(Icons.favorite) : Icon(Icons.favorite_border)),
-                              Text(r["item"], textScaleFactor: 0.75,),
+                              icon: pressed || localP ? Icon(Icons.favorite) : Icon(Icons.favorite_border)),
+                              Text(set[index]["item"], textScaleFactor: 0.75,),
                               Spacer(),
-                              Text("\$" + r["price"].toString() + "\t", textScaleFactor: 0.85,),
+                              Text("\$" + set[index]["price"].toString() + "\t", textScaleFactor: 0.85,),
                               ElevatedButton(
                                   style:
                                       ElevatedButton.styleFrom(minimumSize: Size(10, 15)),
@@ -269,11 +286,12 @@ class _MainScreenState extends State<MainScreen> {
                                       ElevatedButton.styleFrom(minimumSize: Size(10, 15)),
                                   onPressed: () async{ },
                                   child: Text("+"))
-                            ])),
+                            ]),
                         //onTap: () {},
                       ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0, 100, 0, 0),
+                  ],);},)),
+                  Padding(
+                      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                       child: ElevatedButton(
                         key: Key("itemsScreenButton"),
                         onPressed: () {},
@@ -283,8 +301,7 @@ class _MainScreenState extends State<MainScreen> {
                         ),
                       ),
                     ),
-                  ],
-               )]);
+                  ]);
               }return CircularProgressIndicator();}), 
                 //------------End of Items Screen section (Items Tab)------------
               ];
@@ -326,9 +343,9 @@ class _MainScreenState extends State<MainScreen> {
             setState(() {
               _index = value;
             });
-            if(_index != 1){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen(widget.user)));
-            }
+            // if(_index != 1){
+            // Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen(widget.user)));
+            //}
           },
         ));
   }
