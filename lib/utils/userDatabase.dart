@@ -8,4 +8,12 @@ class UserDatabase {
   int age;
   double weight;
   double balance;
+  Set<String> favItems = Set<String>();
+
+  StoreId(String item){
+    favItems.add(item);
+  }
+  GetId(){
+    return favItems;
+  }
 }
