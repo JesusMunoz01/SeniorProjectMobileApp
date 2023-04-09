@@ -91,7 +91,7 @@ void main() {
         expect(await driver.getText(itemsScreenText), "Items");
         expect(await driver.getText(itemsButtonText), "Add");
 
-        await driver.scrollIntoView(itemsScreenButton);
+        //await driver.scrollIntoView(itemsScreenButton);
         await driver.tap(itemsScreenButton);
         
       });
