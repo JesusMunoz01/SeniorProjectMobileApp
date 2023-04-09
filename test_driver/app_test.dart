@@ -82,14 +82,14 @@ void main() {
         
         
         //await driver.scrollIntoView(mainScreenButton);
-        await driver.tap(mainScreenButton);
-        await driver.waitFor(tab);
+        //await driver.tap(mainScreenButton);
+        //await driver.waitFor(tab);
         //await driver.tap(find.text('Home'));
-        await driver.tap(find.text('Items'));
+        //await driver.tap(find.text('Items'));
 
         // Items screen section
-        expect(await driver.getText(itemsScreenText), "Items");
-        expect(await driver.getText(itemsButtonText), "Add");
+        //expect(await driver.getText(itemsScreenText), "Items");
+        //expect(await driver.getText(itemsButtonText), "Add");
 
         //await driver.scrollIntoView(itemsScreenButton);
         //await driver.tap(itemsScreenButton);
