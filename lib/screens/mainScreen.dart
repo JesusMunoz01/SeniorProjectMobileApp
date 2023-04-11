@@ -108,6 +108,7 @@ class _MainScreenState extends State<MainScreen> {
                       itemCount: map.length,
                       itemBuilder:(context, index) {
                         String key = map.keys.elementAt(index);
+                        widget.local.itemCount = map.length;
                         if(map[key]["isFav"] == false)
                         return Container();
                         else
@@ -122,8 +123,10 @@ class _MainScreenState extends State<MainScreen> {
                                   style:
                                       ElevatedButton.styleFrom(minimumSize: Size(10, 15)),
                                   onPressed: () {
+                                    widget.local.AddCount(index, -1);
                                     setState(() {
-                                      qty--;
+                                      //qty--;
+                                      //widget.local.AddCount(index, -1);
                                     });
                                   },
                                   child: Text(
@@ -138,7 +141,7 @@ class _MainScreenState extends State<MainScreen> {
                                       textScaleFactor: 0.75,
                                     ),
                                     Text(
-                                      "${qty}",
+                                      "${widget.local.GetCount(index)}",
                                       textScaleFactor: 0.75,
                                     )
                                   ],
@@ -148,6 +151,7 @@ class _MainScreenState extends State<MainScreen> {
                                   style:
                                       ElevatedButton.styleFrom(minimumSize: Size(10, 15)),
                                   onPressed: () {
+                                    widget.local.AddCount(index, 1);
                                     setState(() {
                                       qty++;
                                     });
