@@ -10,9 +10,9 @@ import 'package:sp_grocery_application/utils/itemDatabase.dart';
 import 'package:sp_grocery_application/utils/userDatabase.dart';
 
 class MainScreen extends StatefulWidget {
-  UserDatabase local = UserDatabase();
+  UserDatabase local;
   String user;
-  MainScreen(this.user);
+  MainScreen(this.user, this.local);
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -38,6 +38,27 @@ class _MainScreenState extends State<MainScreen> {
     //futureP = GroceryAPI.fetchPrice(httpClient, id);
     futureI = databaseSingle();
     futureU = databaseSingleFav();
+    getBalance();
+    checkFav();
+  }
+
+  getBalance() async{
+    final budgetSnapshot = await FirebaseDatabase.instance
+                        .ref("profiles/${widget.user}/Budget")
+                        .get();
+     widget.local.budget = double.parse(budgetSnapshot.value);
+  }
+
+  checkFav() async{
+    try{
+    final favSnapshot = await FirebaseDatabase.instance
+                        .ref("profiles/${widget.user}/hasFav")
+                        .get();
+    if(favSnapshot.value == true)
+    widget.local.hasFavs = favSnapshot.value;
+    else
+    widget.local.hasFavs = false;
+    }catch(_){}
   }
 
   databaseSingle() async{
@@ -72,6 +93,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    widget.local.isLogged = true;
   // List containing two screens (Home and Items)
   List<Widget> _widgets = <Widget>[
     //--------------Main Screen Section (Home tab)--------------
@@ -86,7 +108,7 @@ class _MainScreenState extends State<MainScreen> {
                     Padding(
                       padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
                       child: Text(
-                        "User Budget\n" + "\$${500}",
+                        "User Budget\n" + "\$${widget.local.spent.toStringAsFixed(2)}/\$${widget.local.budget}",
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 24, fontFamily: 'Montserrat'),
                         key: Key("budgetText"),
@@ -101,6 +123,7 @@ class _MainScreenState extends State<MainScreen> {
                       ),
                     ),
                     Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 10)),
+                    widget.local.hasFavs ?
                     SizedBox(height: 500,child:
                       ListView.builder( 
                       shrinkWrap: true,
@@ -123,6 +146,7 @@ class _MainScreenState extends State<MainScreen> {
                                   style:
                                       ElevatedButton.styleFrom(minimumSize: Size(10, 15)),
                                   onPressed: () {
+                                    widget.local.changeSpent(-map[key]["price"]);
                                     widget.local.AddCount(index, -1);
                                     setState(() {
                                       //qty--;
@@ -151,6 +175,7 @@ class _MainScreenState extends State<MainScreen> {
                                   style:
                                       ElevatedButton.styleFrom(minimumSize: Size(10, 15)),
                                   onPressed: () {
+                                    widget.local.changeSpent(map[key]["price"]);
                                     widget.local.AddCount(index, 1);
                                     setState(() {
                                       qty++;
@@ -159,13 +184,16 @@ class _MainScreenState extends State<MainScreen> {
                                   child: Text("+"))
                             ]));
                         //onTap: () {},
-                      })),
+                      })) :
+                      Text("No favorites"),
                     Padding(
                       padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(minimumSize: Size(100, 50)),
                         key: Key("mainScreenButton"),
-                        onPressed: () {},
+                        onPressed: () {widget.local.clearVal();
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen(widget.user, widget.local)));
+                        },
                         child: Text(
                           "Test",
                           key: Key("buttonText"),
@@ -237,7 +265,8 @@ class _MainScreenState extends State<MainScreen> {
                               IconButton(onPressed: () async{   
                                 final ref1 = FirebaseDatabase.instance.ref();
                                 final favorite = await ref1.child("profiles/${widget.user}/items/${set[index]["id"]}").get();
-                                Map favo = favorite.value;
+                                final hasFav = await FirebaseDatabase.instance.ref("profiles/${widget.user}");
+                                await hasFav.update({"hasFav": true});
 
                                 setState((){
                                   if(pressed || localP){
@@ -266,7 +295,12 @@ class _MainScreenState extends State<MainScreen> {
                               ElevatedButton(
                                   style:
                                       ElevatedButton.styleFrom(minimumSize: Size(10, 15)),
-                                  onPressed: () async {},
+                                  onPressed: (){
+                                    widget.local.AddCount(index, 1);
+                                    setState(() {
+                                      qty--;
+                                    });
+                                  },
                                   child: Text(
                                     "-",
                                     textScaleFactor: 1,
@@ -279,7 +313,7 @@ class _MainScreenState extends State<MainScreen> {
                                       textScaleFactor: 0.75,
                                     ),
                                     Text(
-                                      "0",
+                                      "${widget.local.GetCount(index)}",
                                       textScaleFactor: 0.75,
                                     )
                                   ],
@@ -288,7 +322,12 @@ class _MainScreenState extends State<MainScreen> {
                               ElevatedButton(
                                   style:
                                       ElevatedButton.styleFrom(minimumSize: Size(10, 15)),
-                                  onPressed: () async{ },
+                                  onPressed: () {
+                                    widget.local.AddCount(index, 1);
+                                    setState(() {
+                                      qty++;
+                                    });
+                                  },
                                   child: Text("+"))
                             ]),
                         //onTap: () {},
@@ -298,7 +337,9 @@ class _MainScreenState extends State<MainScreen> {
                       padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                       child: ElevatedButton(
                         key: Key("itemsScreenButton"),
-                        onPressed: () {},
+                        onPressed: () {widget.local.clearVal();
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen(widget.user, widget.local)));
+                        },
                         child: Text(
                           "Add",
                           key: Key("itemsButtonText"),
@@ -312,6 +353,7 @@ class _MainScreenState extends State<MainScreen> {
 
     return Scaffold(
         appBar: AppBar(
+          leading: Icon(Icons.arrow_back, color: Colors.transparent,),
           actions: [
             IconButton(
                 onPressed: () {
@@ -323,7 +365,7 @@ class _MainScreenState extends State<MainScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SettingsScreen()));
+                          builder: (context) => SettingsScreen(widget.local, widget.user)));
                 },
                 icon: Icon(Icons.settings)),
             IconButton(onPressed: () {}, icon: Icon(Icons.shopping_bag))
@@ -347,9 +389,9 @@ class _MainScreenState extends State<MainScreen> {
             setState(() {
               _index = value;
             });
-            // if(_index != 1){
-            // Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen(widget.user)));
-            //}
+             if(_index != 1){
+             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen(widget.user, widget.local)));
+            }
           },
         ));
   }

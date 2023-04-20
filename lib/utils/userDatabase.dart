@@ -4,10 +4,13 @@ class UserDatabase {
   String uid;
   String password;
   int itemCount;
-  double height;
   int age;
   double weight;
-  double balance;
+  double height;
+  double budget;
+  double spent = 0;
+  bool isLogged = false;
+  bool hasFavs = false;
   Set<String> favItems = Set<String>();
   List<int> counters = new List<int>.generate(200, (index) => 0);
 
@@ -24,5 +27,13 @@ class UserDatabase {
 
   GetCount(index){
     return counters[index];
+  }
+
+  clearVal(){
+    counters.setAll(0, List<int>.generate(200, (index) => 0));
+  }
+
+  changeSpent(price){
+    spent += price;
   }
 }

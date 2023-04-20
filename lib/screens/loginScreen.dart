@@ -4,20 +4,33 @@ import 'package:sp_grocery_application/screens/infoScreen.dart';
 import 'package:sp_grocery_application/screens/mainScreen.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:sp_grocery_application/utils/itemDatabase.dart';
+import 'package:sp_grocery_application/utils/userDatabase.dart';
 import 'mainScreen.dart';
 
 class SecondScreen extends StatefulWidget {
+  UserDatabase local;
+  SecondScreen(this.local);
   @override
   _SecondScreenState createState() => _SecondScreenState();
 }
 
 class _SecondScreenState extends State<SecondScreen> {
+  void initState() {
+    super.initState();
+    //navigateToMain();
+  }
   TextEditingController _username = TextEditingController();
   TextEditingController _password = TextEditingController();
   @override
   FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference myRef = FirebaseDatabase.instance.ref("profiles/username");
   DatabaseReference data = FirebaseDatabase.instance.ref("items");
+
+  navigateToMain(){
+    if(widget.local.isLogged == true)
+    Navigator.push(context,MaterialPageRoute(
+      builder: (context) => MainScreen(_username.text, widget.local))).then((_) => navigateToMain());
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -81,13 +94,27 @@ class _SecondScreenState extends State<SecondScreen> {
                     final passSnapshot = await FirebaseDatabase.instance
                         .ref("profiles/${_username.text}/password")
                         .get();
+                    final budgetSnapshot = await FirebaseDatabase.instance
+                        .ref("profiles/${_username.text}/Budget")
+                        .get();
+                    final firstLog = await FirebaseDatabase.instance
+                        .ref("profiles/${_username.text}/firstLog")
+                        .get();
                     if (_username.text == snapshot.value.toString() &&
                         _password.text.length > 8 &&
                         _password.text == passSnapshot.value.toString()) {
+                      // widget.local.budget = double.parse(budgetSnapshot.value);
+                      widget.local.isLogged = true;
+                      if(firstLog.value == true)
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MainScreen(_username.text)));
+                              builder: (context) => InfoScreen(_username.text, widget.local)));
+                      else
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MainScreen(_username.text, widget.local))).then((_) => navigateToMain());
                     }
                   },
                 )),
@@ -98,7 +125,7 @@ class _SecondScreenState extends State<SecondScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => createAccScreen()));
+                          builder: (context) => createAccScreen(widget.local)));
                 },
                 child: Text(
                   "Create an Account",
