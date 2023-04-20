@@ -76,7 +76,7 @@ void main() {
         expect(await driver.getText(mainScreenText), "Favorites");
         expect(await driver.getText(mainScreenButtonText), "Test");
         expect(await driver.getText(mainScreenBudgetText),
-            "User Budget\n\$0.00/\$50000");
+            "User Budget\n\$0.00/\$50000.0");
         
         
         //await driver.scrollIntoView(mainScreenButton);

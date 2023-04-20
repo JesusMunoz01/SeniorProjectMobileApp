@@ -89,7 +89,6 @@ class _MainScreenState extends State<MainScreen> {
   List<ItemDatabase> testItems = getItem();
   static double price;
   List<dynamic> itemList;
-  
 
 
   @override
