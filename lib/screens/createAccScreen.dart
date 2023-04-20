@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:sp_grocery_application/screens/loginScreen.dart';
 import 'package:sp_grocery_application/screens/mainScreen.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:sp_grocery_application/utils/userDatabase.dart';
 import 'mainScreen.dart';
 
 class createAccScreen extends StatefulWidget {
+  UserDatabase local;
+  createAccScreen(this.local);
   @override
   _createAccScreenState createState() => _createAccScreenState();
 }
@@ -95,11 +98,13 @@ class _createAccScreenState extends State<createAccScreen> {
                       await myNewRef.set({
                         "username": _username.text,
                         "password": _password.text,
+                        "firstLog": true,
+                        "hasFav": false
                       });
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SecondScreen()));
+                              builder: (context) => SecondScreen(widget.local)));
                     }
                   },
                 )),
