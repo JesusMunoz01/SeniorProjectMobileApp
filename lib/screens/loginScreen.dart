@@ -35,19 +35,25 @@ class _SecondScreenState extends State<SecondScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF79802),
       body: Center(
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.fromLTRB(20, 200, 20, 0),
+              padding: EdgeInsets.fromLTRB(20, 50, 20, 0),
+            ),
+            Container(child: Image.asset('assets/images/newflan.png'), width: 300, height: 300,),
+            /*
+            Padding(
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: Text(
                 "Login",
                 key: Key("secondScreenTest"),
                 style: TextStyle(fontSize: 18, fontFamily: 'Montserrat'),
               ),
-            ),
+            )*/
             Padding(
-              padding: EdgeInsets.fromLTRB(0, 80, 0, 0),
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
             ),
             Container(
               padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
@@ -55,9 +61,12 @@ class _SecondScreenState extends State<SecondScreen> {
                 key: Key("usernameTextField"),
                 controller: _username,
                 decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.white,
+                  //border: OutlineInputBorder(),
                   label: Text(
                     'Username',
+                    style: TextStyle(color: Colors.black),
                     key: Key("usernameText"),
                   ),
                 ),
@@ -70,7 +79,9 @@ class _SecondScreenState extends State<SecondScreen> {
                 obscureText: true,
                 controller: _password,
                 decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.white,
+                  //border: OutlineInputBorder(),
                   label: Text(
                     'Password',
                     key: Key("passwordText"),
@@ -79,9 +90,11 @@ class _SecondScreenState extends State<SecondScreen> {
               ),
             ),
             Container(
-                height: 50,
+                width: 200,
+                height: 69,
                 padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
                   key: Key("loginButton"),
                   child: const Text(
                     'Login',
@@ -129,7 +142,7 @@ class _SecondScreenState extends State<SecondScreen> {
                 },
                 child: Text(
                   "Create an Account",
-                  style: TextStyle(color: Colors.blue),
+                  style: TextStyle(color: Colors.black),
                   key: Key("createAccText"),
                 ),
                 key: Key("createAccButton"),

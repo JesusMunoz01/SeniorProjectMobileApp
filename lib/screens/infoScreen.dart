@@ -32,10 +32,12 @@ class _InfoScreenState extends State<InfoScreen> {
       Text("Enter your name", key: Key("nameText"),),
       Padding(padding: EdgeInsets.fromLTRB(0, 25, 0, 0)),
       TextField(key: Key("nameTextField"), controller: _name, decoration: InputDecoration(border: OutlineInputBorder(),
+                filled: true,
+                fillColor: Colors.white/*fromARGB(255, 250, 203, 127)*/,
                 //hintText: "James",
                 label: Text('Name',key: Key("nameLabel"),)), ),
       Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
-      ElevatedButton(onPressed: () {setState(() {_index = 1;});}, key: Key("nameButton"), child: Text("Submit"))])),),
+      ElevatedButton(onPressed: () {setState(() {_index = 1;});}, style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF813F0B)), key: Key("nameButton"), child: Text("Submit"))])),),
 
     Container(padding: EdgeInsets.fromLTRB(20,375,20,0), child: Center(child: Column(children: [
       Text("Enter your age", key: Key("ageText"),),
@@ -93,6 +95,7 @@ class _InfoScreenState extends State<InfoScreen> {
   ];
 
         return Scaffold(
+          backgroundColor: Color.fromARGB(255, 245, 182, 80),
         body:Center(child: _widgets.elementAt(_index)),
       );
   }
