@@ -101,7 +101,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         label: Text('Time Frame')
                       )
                     )
-                  ],))
+                  ],), actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async{ 
+                final snapshot = await FirebaseDatabase.instance.ref("profiles/${widget.user}");
+                await snapshot.update({"Budget": balance.text});
+                Navigator.pop(context, 'OK');},
+              child: const Text('Confirm'),
+            ),
+          ],)
                 )
               
                 

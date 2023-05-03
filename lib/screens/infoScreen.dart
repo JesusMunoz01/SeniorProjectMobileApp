@@ -19,8 +19,12 @@ class _InfoScreenState extends State<InfoScreen> {
   TextEditingController _weight = TextEditingController();
   TextEditingController _height = TextEditingController();
   TextEditingController _budget = TextEditingController();
-  TextEditingController _timeFrame = TextEditingController();
+  int _timeFrame = 0;
   int _index = 0;
+  bool selected1 = false;
+  bool selected2 = false;
+  bool selected3 = false;
+  bool _check = true;
   @override
   FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference userRef = FirebaseDatabase.instance.ref("profiles/username");
@@ -75,9 +79,61 @@ class _InfoScreenState extends State<InfoScreen> {
       ElevatedButton(onPressed: () {setState(() {_index = 6;});}, key: Key("budgetButton"), child: Text("Submit"))]))),
                 
     Container(padding: EdgeInsets.fromLTRB(20,375,20,0), child: Center(child: Column(children: [
-      Text("Enter your time frame", key: Key("timeFrameText"),),
-      TextField(key: Key("timeFrameTextField"), controller: _timeFrame, decoration: InputDecoration(border: OutlineInputBorder(),
-                label: Text('Time Frame',key: Key("timeFrameLabel"),)),),
+      Text("Select your time frame", key: Key("timeFrameText"),),
+      // TextField(key: Key("timeFrameTextField"), controller: _timeFrame, decoration: InputDecoration(border: OutlineInputBorder(),
+      //           label: Text('Time Frame',key: Key("timeFrameLabel"),)),),
+      RadioListTile(
+          title: const Text('1 Week'),
+          value: selected1,
+          groupValue: _check,
+          onChanged: (value) {
+            setState(() {
+              if(selected1 == false){
+              _timeFrame = 1;
+              selected1 = !value;
+              selected2 = false;
+              selected3 = false;
+              }
+              else
+              selected1 = value;
+
+            });
+          },
+      ),
+      RadioListTile(
+          title: const Text('2 Weeks'),
+          value: selected2,
+          groupValue: _check,
+          onChanged: (value) {
+            setState(() {
+              _timeFrame = 2;
+              if(selected2 == false){
+              selected2 = !value;
+              selected1 = false;
+              selected3 = false;
+              }
+              else
+              selected2 = !value;
+            });
+          },
+      ),
+      RadioListTile(
+          title: const Text('Monthly'),
+          value: selected3,
+          groupValue: _check,
+          onChanged: (value) {
+            setState(() {
+              _timeFrame = 4;
+              if(selected3 == false){
+              selected3 = !value;
+              selected2 = false;
+              selected1 = false;
+              }
+              else
+              selected2 = !value;
+            });
+          },
+      ),
       Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
       ElevatedButton(key: Key("timeFrameButton"),
         onPressed: () async{
@@ -89,7 +145,7 @@ class _InfoScreenState extends State<InfoScreen> {
             "Weight" : _weight.text,
             "Height" : _height.text,
             "Budget" : _budget.text,
-            "Time Frame" : _timeFrame.text,
+            "Time Frame" : _timeFrame,
             "firstLog" : false});
         Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen(widget.user, widget.local)));}, child: Text("Submit"))]))),            
   ];
