@@ -22,6 +22,7 @@ class _createAccScreenState extends State<createAccScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: IconButton(
@@ -99,7 +100,8 @@ class _createAccScreenState extends State<createAccScreen> {
                         "username": _username.text,
                         "password": _password.text,
                         "firstLog": true,
-                        "hasFav": false
+                        "hasFav": false,
+                        "hasMeal": false,
                       });
                       Navigator.push(
                           context,

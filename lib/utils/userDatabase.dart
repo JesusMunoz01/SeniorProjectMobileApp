@@ -5,6 +5,7 @@ class UserDatabase {
   String password;
   int itemCount;
   int age;
+  int favCheck = 0;
   double weight;
   double height;
   double budget;
