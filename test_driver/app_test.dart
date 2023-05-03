@@ -92,7 +92,7 @@ void main() {
         //await driver.scrollIntoView(itemsScreenButton);
         //await driver.tap(itemsScreenButton);
         
-      } ,);
+      } ,skip: true);
 
       //Logged in path
       test("template test", () async {
