@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:sp_grocery_application/screens/itemsScreen.dart';
 import 'package:sp_grocery_application/screens/mainScreen.dart';
@@ -20,6 +21,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _index = 0;
   int qty = 0;
+  int oldIndex = 0;
   Future<String> futureP;
   Future<dynamic> futureI;
   Future<dynamic> futureU;
@@ -29,6 +31,9 @@ class _MainScreenState extends State<MainScreen> {
   bool update = true;
   String id = "701111";
   bool fav = false;
+  bool hasFavorite = false;
+  bool alreadyFalse = false;
+  bool otherFavs = false;
   Set<String> favItems = Set<String>();
   Set<String> localFav = Set<String>();
   Set<String> itemCount = Set<String>();
@@ -50,15 +55,10 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   checkFav() async{
-    try{
-    final favSnapshot = await FirebaseDatabase.instance
+    final fav = await FirebaseDatabase.instance
                         .ref("profiles/${widget.user}/hasFav")
                         .get();
-    if(favSnapshot.value == true)
-    widget.local.hasFavs = favSnapshot.value;
-    else
-    widget.local.hasFavs = false;
-    }catch(_){}
+     widget.local.hasFavs = fav.value;
   }
 
   databaseSingle() async{
@@ -81,6 +81,18 @@ class _MainScreenState extends State<MainScreen> {
     if (snapshot1.exists){
       return(snapshot1.value);
     }
+    else
+      return <dynamic, dynamic>{};
+  }
+
+  databaseMeals() async{
+  final ref1 = FirebaseDatabase.instance.ref();
+  final snapshot1 = await ref1.child('profiles/${widget.user}/meals').get();
+    if (snapshot1.exists){
+      return(snapshot1.value);
+    }
+    else
+      return <dynamic, dynamic>{};
   }
 
   FirebaseDatabase database = FirebaseDatabase.instance;
@@ -91,9 +103,13 @@ class _MainScreenState extends State<MainScreen> {
   List<dynamic> itemList;
 
 
+  var sections = ["Favorite", "Add to meal"];
+
   @override
   Widget build(BuildContext context) {
     widget.local.isLogged = true;
+    widget.local.favCheck = 0;
+    otherFavs = false;
   // List containing two screens (Home and Items)
   List<Widget> _widgets = <Widget>[
     //--------------Main Screen Section (Home tab)--------------
@@ -132,9 +148,18 @@ class _MainScreenState extends State<MainScreen> {
                       itemBuilder:(context, index) {
                         String key = map.keys.elementAt(index);
                         widget.local.itemCount = map.length;
-                        if(map[key]["isFav"] == false)
-                        return Container();
-                        else
+                        if(map[key]["isFav"] == false && otherFavs == false){
+                            otherFavs = false;
+                        }
+                        else otherFavs = true;
+                        if(otherFavs == false){
+                          if(alreadyFalse == false){
+                            alreadyFalse = true;
+                            return Container(child: Text("No favorites", textAlign: TextAlign.center,));}
+                            else return Container();
+                        }
+                        else{
+                        otherFavs = true;
                         return Container(
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -182,7 +207,7 @@ class _MainScreenState extends State<MainScreen> {
                                     });
                                   },
                                   child: Text("+"))
-                            ]));
+                            ]));}
                         //onTap: () {},
                       })) :
                       Text("No favorites"),
@@ -239,57 +264,27 @@ class _MainScreenState extends State<MainScreen> {
                     return Column(
                   children: [
                     Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 10)),
-                    //for(var r in set)
-                      //ListTile(
-                        //title: 
+
+                        ExpansionTile(controlAffinity: ListTileControlAffinity.leading ,
+                        title:
                         Container(
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                            // if(update == true && itemNum < 2)
+                            // if(index > 9 && index <= 15)
                             //   FutureBuilder<String>(
-                            //     future: GroceryAPI.fetchPrice(httpClient, r["id"]),
+                            //     future: GroceryAPI.fetchPrice(httpClient, set[index]["id"]),
                             //     builder: (context, snapshot) {
                             //       if (snapshot.hasData && itemNum < 2) {
-                            //         DatabaseReference setAPIPrice = FirebaseDatabase.instance.ref("items/itemList/${itemNum}");
+                            //         DatabaseReference setAPIPrice = FirebaseDatabase.instance.ref("items/itemList/${index}");
                             //         setAPIPrice.update({"price": double.parse(snapshot.data)});
-                            //         itemNum++;
-                            //         update = false;
                             //        } else if (snapshot.hasError) {
                             //          return Text('${snapshot.error}');
                             //        }
                             //        return CircularProgressIndicator();
                             //      },
                             //    ),
-                              
-                              IconButton(onPressed: () async{   
-                                final ref1 = FirebaseDatabase.instance.ref();
-                                final favorite = await ref1.child("profiles/${widget.user}/items/${set[index]["id"]}").get();
-                                final hasFav = await FirebaseDatabase.instance.ref("profiles/${widget.user}");
-                                await hasFav.update({"hasFav": true});
-
-                                setState((){
-                                  if(pressed || localP){
-                                    widget.local.favItems.remove(set[index]['id']);
-                                    favItems.remove(set[index]['id']); 
-                                  }else{
-                                    widget.local.favItems.add(set[index]['id']);
-                                    favItems.add(set[index]['id']); 
-                                  }              
-                                  });
-                                
-                                if(!pressed || !localP){
-                                    final snapshot = await FirebaseDatabase.instance
-                                    .ref("profiles/${widget.user}/items/${set[index]["id"]}");
-                                    await snapshot.update({"isFav": true, "item":set[index]["item"], "id":set[index]["id"], "price":set[index]["price"]});
-                                }else{
-                                  final snapshot = await FirebaseDatabase.instance
-                                    .ref("profiles/${widget.user}/items/${set[index]["id"]}");
-                                    await snapshot.update({"isFav": false, "item":set[index]["item"], "id":set[index]["id"], "price":set[index]["price"]});
-                                };
-                              ;}, 
-                              icon: pressed || localP ? Icon(Icons.favorite) : Icon(Icons.favorite_border)),
-                              Text(set[index]["item"], textScaleFactor: 0.75,),
+                              Expanded(child:Text(set[index]["item"], textScaleFactor: 0.85,)),
                               Spacer(),
                               Text("\$" + set[index]["price"].toString() + "\t", textScaleFactor: 0.85,),
                               ElevatedButton(
@@ -332,7 +327,70 @@ class _MainScreenState extends State<MainScreen> {
                             ]),
                         //onTap: () {},
                       ),
-                  ],);},)),
+                      children: [   
+                        Row(children: [
+                          IconButton(onPressed: () async{   
+                                final ref1 = FirebaseDatabase.instance.ref();
+                                final favorite = await ref1.child("profiles/${widget.user}/items/${set[index]["id"]}").get();
+                                final hasFav = await FirebaseDatabase.instance.ref("profiles/${widget.user}");
+                                await hasFav.update({"hasFav": true});
+
+                                setState((){
+                                  if(pressed || localP){
+                                    widget.local.favItems.remove(set[index]['id']);
+                                    favItems.remove(set[index]['id']); 
+                                  }else{
+                                    widget.local.favItems.add(set[index]['id']);
+                                    favItems.add(set[index]['id']); 
+                                  }              
+                                  });
+                                
+                                if(!pressed || !localP){
+                                    final snapshot = await FirebaseDatabase.instance
+                                    .ref("profiles/${widget.user}/items/${set[index]["id"]}");
+                                    await snapshot.update({"isFav": true, "item":set[index]["item"], "id":set[index]["id"], "price":set[index]["price"]});
+                                }else{
+                                  final snapshot = await FirebaseDatabase.instance
+                                    .ref("profiles/${widget.user}/items/${set[index]["id"]}");
+                                    await snapshot.update({"isFav": false, "item":set[index]["item"], "id":set[index]["id"], "price":set[index]["price"]});
+                                }
+                              }, 
+                              icon: pressed || localP ? Icon(Icons.favorite) : Icon(Icons.favorite_border)),
+                              Text("Add to favorites")
+                        ],),
+                        Row(children: [
+                          IconButton(onPressed: () async{   
+                                final ref1 = FirebaseDatabase.instance.ref();
+                                final favorite = await ref1.child("profiles/${widget.user}/items/${set[index]["id"]}").get();
+                                final hasFav = await FirebaseDatabase.instance.ref("profiles/${widget.user}");
+                                await hasFav.update({"hasFav": true});
+
+                                setState((){
+                                  if(pressed || localP){
+                                    widget.local.favItems.remove(set[index]['id']);
+                                    favItems.remove(set[index]['id']); 
+                                  }else{
+                                    widget.local.favItems.add(set[index]['id']);
+                                    favItems.add(set[index]['id']); 
+                                  }              
+                                  });
+                                
+                                if(!pressed || !localP){
+                                    final snapshot = await FirebaseDatabase.instance
+                                    .ref("profiles/${widget.user}/meals/${set[index]["id"]}");
+                                    await snapshot.update({"isFav": true, "item":set[index]["item"], "id":set[index]["id"], "price":set[index]["price"]});
+                                }else{
+                                  final snapshot = await FirebaseDatabase.instance
+                                    .ref("profiles/${widget.user}/meals/${set[index]["id"]}");
+                                    await snapshot.update({"isFav": false, "item":set[index]["item"], "id":set[index]["id"], "price":set[index]["price"]});
+                                }
+                              }, 
+                              icon: Icon(Icons.dinner_dining)),
+                              Text("Add to meals")
+                        ],),
+                      ],
+                    )
+                ],);},)),
                   Padding(
                       padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                       child: ElevatedButton(
@@ -349,9 +407,127 @@ class _MainScreenState extends State<MainScreen> {
                   ]);
               }return CircularProgressIndicator();}), 
                 //------------End of Items Screen section (Items Tab)------------
+
+                // -----------Meals Screen Section (Meal tab)---------------
+                 FutureBuilder<dynamic>(
+      future: futureU,
+      initialData: null,
+      builder: (context, AsyncSnapshot newSnapshot) {
+      if (newSnapshot.hasData && newSnapshot.connectionState == ConnectionState.done) {
+        Map map = newSnapshot.data;
+                return Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
+                      child: Text(
+                        "User Budget\n" + "\$${widget.local.spent.toStringAsFixed(2)}/\$${widget.local.budget}",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 24, fontFamily: 'Montserrat'),
+                        key: Key("budgetText"),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0, 40, 0, 0),
+                      child: Text(
+                        "Meals",
+                        style: TextStyle(fontSize: 18, fontFamily: 'Montserrat'),
+                        key: Key("favoriteText"),
+                      ),
+                    ),
+                    Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 10)),
+                    widget.local.hasFavs ?
+                    SizedBox(height: 500,child:
+                      ListView.builder( 
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: map.length,
+                      itemBuilder:(context, index) {
+                        String key = map.keys.elementAt(index);
+                        widget.local.itemCount = map.length;
+                        if(map[key]["isFav"] == false && otherFavs == false){
+                            otherFavs = false;
+                        }
+                        else otherFavs = true;
+                        if(otherFavs == false){
+                          return Container(child: Text("No favorites", textAlign: TextAlign.center,),);
+                        }
+                        else{
+                        otherFavs = true;
+                        return Container(
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                              Text("${map[key]["item"]}", textScaleFactor: 0.75,),
+                              Spacer(),
+                              Text("\$" + map[key]["price"].toString() + "\t", textScaleFactor: 0.85,),
+                              ElevatedButton(
+                                  style:
+                                      ElevatedButton.styleFrom(minimumSize: Size(10, 15)),
+                                  onPressed: () {
+                                    widget.local.changeSpent(-map[key]["price"]);
+                                    widget.local.AddCount(index, -1);
+                                    setState(() {
+                                      //qty--;
+                                      //widget.local.AddCount(index, -1);
+                                    });
+                                  },
+                                  child: Text(
+                                    "-",
+                                    textScaleFactor: 1,
+                                  )),
+                              Container(
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      "QTY:",
+                                      textScaleFactor: 0.75,
+                                    ),
+                                    Text(
+                                      "${widget.local.GetCount(index)}",
+                                      textScaleFactor: 0.75,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              ElevatedButton(
+                                  style:
+                                      ElevatedButton.styleFrom(minimumSize: Size(10, 15)),
+                                  onPressed: () {
+                                    widget.local.changeSpent(map[key]["price"]);
+                                    widget.local.AddCount(index, 1);
+                                    setState(() {
+                                      qty++;
+                                    });
+                                  },
+                                  child: Text("+"))
+                            ]));}
+                        //onTap: () {},
+                      })) :
+                      Text("No favorites"),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(minimumSize: Size(100, 50)),
+                        key: Key("mainScreenButton"),
+                        onPressed: () {widget.local.clearVal();
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen(widget.user, widget.local)));
+                        },
+                        child: Text(
+                          "Test",
+                          key: Key("buttonText"),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+      }
+      return CircularProgressIndicator();}),
+                //------------End of Items Screen section (Items Tab)-----------
               ];
 
+    // Scaffold
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           leading: Icon(Icons.arrow_back, color: Colors.transparent,),
           actions: [
@@ -382,14 +558,19 @@ class _MainScreenState extends State<MainScreen> {
               icon: Icon(Icons.format_list_bulleted_rounded),
               label: 'Items',
             ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.format_list_bulleted_rounded),
+              label: 'Meals',
+            ),
           ],
           key: Key('tabs'),
           currentIndex: _index,
           onTap: (int value) {
             setState(() {
+              oldIndex = _index;
               _index = value;
             });
-             if(_index != 1){
+             if(oldIndex != 0 && _index == 0){
              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen(widget.user, widget.local)));
             }
           },
