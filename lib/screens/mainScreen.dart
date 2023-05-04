@@ -291,7 +291,7 @@ class _MainScreenState extends State<MainScreen> {
                                   style:
                                       ElevatedButton.styleFrom(minimumSize: Size(10, 15)),
                                   onPressed: (){
-                                    widget.local.AddCount(index, 1);
+                                    widget.local.AddCount(index, -1);
                                     setState(() {
                                       qty--;
                                     });
@@ -359,33 +359,57 @@ class _MainScreenState extends State<MainScreen> {
                               Text("Add to favorites")
                         ],),
                         Row(children: [
-                          IconButton(onPressed: () async{   
-                                final ref1 = FirebaseDatabase.instance.ref();
-                                final favorite = await ref1.child("profiles/${widget.user}/items/${set[index]["id"]}").get();
-                                final hasFav = await FirebaseDatabase.instance.ref("profiles/${widget.user}");
-                                await hasFav.update({"hasFav": true});
+                          Padding(padding: EdgeInsets.fromLTRB(14, 0, 0, 0)),
+                          GestureDetector(
+                            child: Icon(Icons.dinner_dining),
+                            onTap:() => showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: const Text('Add to meals'),
+                                content: Text("Meal 0"),
+                        actions: <Widget>[
+                          TextButton(onPressed: (){}, child: const Text('Create a meal')),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'Cancel'),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () async{ 
+                              Navigator.pop(context, 'OK');},
+                            child: const Text('Confirm'),
+                          ),
+                        ],
+                      ),
+                    ),
+                          ),
+                          // IconButton(onPressed: () async{   
+                          //       final ref1 = FirebaseDatabase.instance.ref();
+                          //       final favorite = await ref1.child("profiles/${widget.user}/items/${set[index]["id"]}").get();
+                          //       final hasFav = await FirebaseDatabase.instance.ref("profiles/${widget.user}");
+                          //       await hasFav.update({"hasFav": true});
 
-                                setState((){
-                                  if(pressed || localP){
-                                    widget.local.favItems.remove(set[index]['id']);
-                                    favItems.remove(set[index]['id']); 
-                                  }else{
-                                    widget.local.favItems.add(set[index]['id']);
-                                    favItems.add(set[index]['id']); 
-                                  }              
-                                  });
+                          //       setState((){
+                          //         if(pressed || localP){
+                          //           widget.local.favItems.remove(set[index]['id']);
+                          //           favItems.remove(set[index]['id']); 
+                          //         }else{
+                          //           widget.local.favItems.add(set[index]['id']);
+                          //           favItems.add(set[index]['id']); 
+                          //         }              
+                          //         });
                                 
-                                if(!pressed || !localP){
-                                    final snapshot = await FirebaseDatabase.instance
-                                    .ref("profiles/${widget.user}/meals/${set[index]["id"]}");
-                                    await snapshot.update({"isFav": true, "item":set[index]["item"], "id":set[index]["id"], "price":set[index]["price"]});
-                                }else{
-                                  final snapshot = await FirebaseDatabase.instance
-                                    .ref("profiles/${widget.user}/meals/${set[index]["id"]}");
-                                    await snapshot.update({"isFav": false, "item":set[index]["item"], "id":set[index]["id"], "price":set[index]["price"]});
-                                }
-                              }, 
-                              icon: Icon(Icons.dinner_dining)),
+                          //       if(!pressed || !localP){
+                          //           final snapshot = await FirebaseDatabase.instance
+                          //           .ref("profiles/${widget.user}/meals/${set[index]["id"]}");
+                          //           await snapshot.update({"isFav": true, "item":set[index]["item"], "id":set[index]["id"], "price":set[index]["price"]});
+                          //       }else{
+                          //         final snapshot = await FirebaseDatabase.instance
+                          //           .ref("profiles/${widget.user}/meals/${set[index]["id"]}");
+                          //           await snapshot.update({"isFav": false, "item":set[index]["item"], "id":set[index]["id"], "price":set[index]["price"]});
+                          //       }
+                          //     }, 
+                          //     icon: Icon(Icons.dinner_dining)),
+                              Padding(padding: EdgeInsets.fromLTRB(11, 0, 0, 0)),
                               Text("Add to meals")
                         ],),
                       ],
@@ -559,7 +583,7 @@ class _MainScreenState extends State<MainScreen> {
               label: 'Items',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.format_list_bulleted_rounded),
+              icon: Icon(Icons.ramen_dining_outlined),
               label: 'Meals',
             ),
           ],
