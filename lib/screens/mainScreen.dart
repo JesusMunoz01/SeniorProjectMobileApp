@@ -737,15 +737,15 @@ class _MainScreenState extends State<MainScreen> {
           backgroundColor: Color(0xFFF79802),
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: Icon(Icons.home, key: Key("homeTab"),),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.format_list_bulleted_rounded),
+              icon: Icon(Icons.format_list_bulleted_rounded, key: Key("itemsTab"),),
               label: 'Items',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.ramen_dining_outlined),
+              icon: Icon(Icons.ramen_dining_outlined, key: Key("mealTab"),),
               label: 'Meals',
             ),
           ],
@@ -867,7 +867,7 @@ class CustomSearch extends SearchDelegate {
 
                                     final currentItem = await FirebaseDatabase.instance
                                       .ref("profiles/${user}/items/${item["id"]}");
-                                    await currentItem.update({ "isFav": true});},             
+                                    await currentItem.update({"isFav": true, "item": item["item"], "id":item["id"], "price":item["price"]});},             
                                   child: Text("+"))
                             ]))
           );
