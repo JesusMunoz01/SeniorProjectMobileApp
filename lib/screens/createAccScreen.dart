@@ -22,6 +22,7 @@ class _createAccScreenState extends State<createAccScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF79802),
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -41,29 +42,32 @@ class _createAccScreenState extends State<createAccScreen> {
       body: Center(
         child: Column(
           children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(20, 200, 20, 0),
+            Padding(padding: EdgeInsets.fromLTRB(0, 30, 0, 0)),
+            Row(children: [
+              Padding(
+              padding: EdgeInsets.fromLTRB(25, 0, 40, 0),
               child: Text(
-                "Create an Account",
+                "Create \nNew \nAccount!!!",
                 key: Key("createAccScreenText"),
-                style: TextStyle(fontSize: 18, fontFamily: 'Montserrat'),
+                style: TextStyle(fontSize: 48, fontFamily: 'Arial', fontWeight: FontWeight.bold),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 80, 0, 0),
-            ),
+            ),],),
+            Padding(padding: EdgeInsets.fromLTRB(0, 50, 0, 0)),
             Container(
               padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
               child: TextField(
                 key: Key("createAccUsernameField"),
                 controller: _username,
                 decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.white,
                   label: Text(
                     'Username',
+                    style: TextStyle(color: Colors.black),
                     key: Key("createAccUsernameText"),
                   ),
                 ),
+                
               ),
             ),
             Container(
@@ -73,21 +77,25 @@ class _createAccScreenState extends State<createAccScreen> {
                 obscureText: true,
                 controller: _password,
                 decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.white,
                   label: Text(
                     'Password',
+                    style: TextStyle(color: Colors.black),
                     key: Key("createAccPasswordText"),
                   ),
                 ),
               ),
             ),
             Container(
-                height: 50,
+                width: 200,
+                height: 69,
                 padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
                   key: Key("submitAccButton"),
                   child: const Text(
-                    'Submit',
+                    'Create Account', style: TextStyle(color: Colors.white),
                     key: Key("submitAccTextButton"),
                   ),
                   onPressed: () async {
