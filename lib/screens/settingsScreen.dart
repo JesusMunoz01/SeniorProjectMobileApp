@@ -32,6 +32,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        backgroundColor: Color(0xFFF79802),
         actions: [
           
         ]
@@ -39,10 +40,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: Center(
         child: Column(
           children: [Padding(padding: EdgeInsets.fromLTRB(0, 50, 0, 0)), 
-          Text("Settings", style: TextStyle(fontSize: 24, fontFamily: 'Montserrat')),
+          Text("Settings", style: TextStyle(fontSize: 24, fontFamily: 'Montserrat'), key: Key("settingsText"),),
           Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 50)),
           ListTile(title: 
-              Text("Personal Info", textAlign: TextAlign.center,),
+              Text("Personal Info", textAlign: TextAlign.center, key: Key("personalText"),),
+              key: Key("personalButton"),
               onTap:() => showDialog<String>(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
@@ -120,7 +122,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ,
           ),
           ListTile(title: 
-              Text("Budget", textAlign: TextAlign.center,),
+              Text("Budget", textAlign: TextAlign.center, key: Key("budgetTextSet"),),
+              key: Key("budgetButton"),
               onTap:() => showDialog<String>(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
@@ -149,8 +152,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
       ),
           ),
-          ListTile(title: 
-              Text("Logout", textAlign: TextAlign.center),
+          ListTile(title:
+              Text("Logout", textAlign: TextAlign.center, key: Key("logoutText"),),
+              key: Key("logoutButton"),
               onTap:() {
                 widget.local.isLogged = false;
                 Navigator.pushAndRemoveUntil(
@@ -161,7 +165,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 350)),
           ListTile(title: 
-              Text("Delete Account", textAlign: TextAlign.center, style: TextStyle(color: Color.fromARGB(255, 184, 13, 1)),),
+              Text("Delete Account", textAlign: TextAlign.center, style: TextStyle(color: Color.fromARGB(255, 184, 13, 1)),  key: Key("deleteText"),),
+              key: Key("deleteButton"),
               onTap:() async{
                 await FirebaseDatabase.instance.ref("profiles/${widget.user}").remove();
                 Navigator.pushAndRemoveUntil(
