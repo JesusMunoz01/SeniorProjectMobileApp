@@ -85,6 +85,7 @@ class _SecondScreenState extends State<SecondScreen> {
                   //border: OutlineInputBorder(),
                   label: Text(
                     'Password',
+                    style: TextStyle(color: Colors.black),
                     key: Key("passwordText"),
                   ),
                 ),
