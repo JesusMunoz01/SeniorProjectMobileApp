@@ -12,6 +12,8 @@ class UserDatabase {
   double spent = 0;
   bool isLogged = false;
   bool hasFavs = false;
+  bool hasMeal = false;
+  bool hasItems = false;
   Set<String> favItems = Set<String>();
   List<int> counters = new List<int>.generate(200, (index) => 0);
 

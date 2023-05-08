@@ -102,6 +102,7 @@ class _createAccScreenState extends State<createAccScreen> {
                         "firstLog": true,
                         "hasFav": false,
                         "hasMeal": false,
+                        "hasItems": false
                       });
                       Navigator.push(
                           context,
