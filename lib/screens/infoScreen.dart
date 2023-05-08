@@ -28,6 +28,11 @@ class _InfoScreenState extends State<InfoScreen> {
   @override
   FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference userRef = FirebaseDatabase.instance.ref("profiles/username");
+    navigateToMain(){
+    if(widget.local.isLogged == true)
+    Navigator.push(context,MaterialPageRoute(
+      builder: (context) => MainScreen(widget.user, widget.local))).then((_) => navigateToMain());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -145,9 +150,10 @@ class _InfoScreenState extends State<InfoScreen> {
             "Weight" : _weight.text,
             "Height" : _height.text,
             "Budget" : _budget.text,
+            "Spent" : 0.0,
             "Time Frame" : _timeFrame,
             "firstLog" : false});
-        Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen(widget.user, widget.local)));}, child: Text("Submit"))]))),            
+        Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen(widget.user, widget.local), )).then((_) => navigateToMain());}, child: Text("Submit"))]))),            
   ];
 
         return Scaffold(
