@@ -37,4 +37,7 @@ class UserDatabase {
   changeSpent(price){
     spent += price;
   }
+
+  storeChanges(String item, int amount, double cost){
+  }
 }
