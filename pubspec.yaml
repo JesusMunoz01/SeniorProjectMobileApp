@@ -47,6 +47,10 @@ flutter:
 
   assets:     
     - assets/images/newflan.png
+    - assets/images/cop2.png
+    - assets/images/info1.0.png
+    - assets/images/info2.png
+    - assets/images/happyFlan.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

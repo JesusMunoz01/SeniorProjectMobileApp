@@ -37,56 +37,120 @@ class _InfoScreenState extends State<InfoScreen> {
   @override
   Widget build(BuildContext context) {
       List<Widget> _widgets = <Widget>[
-    Container(padding: EdgeInsets.fromLTRB(20,350,20,0), child: Center(child: Column(children: [
-      Text("Enter your name", key: Key("nameText"),),
-      Padding(padding: EdgeInsets.fromLTRB(0, 25, 0, 0)),
-      TextField(key: Key("nameTextField"), controller: _name, decoration: InputDecoration(border: OutlineInputBorder(),
+    //////////////////////////////////////// NAME //////////////////////////////////////////////////
+    Container(padding: EdgeInsets.fromLTRB(20,200,20,0), child: Center(child: Column(children: [
+      //Container(child: Image.asset('assets/images/info1.0.png'), width: 300, height: 300,),
+      Text("Enter Your Name", key: Key("nameText"), style: TextStyle(fontSize: 20)),
+      Padding(padding: EdgeInsets.fromLTRB(0, 60, 0, 0)),
+      TextField(key: Key("nameTextField"),
+                controller: _name, 
+                decoration: InputDecoration(border: OutlineInputBorder(),
                 filled: true,
                 fillColor: Colors.white/*fromARGB(255, 250, 203, 127)*/,
                 //hintText: "James",
                 label: Text('Name',key: Key("nameLabel"),)), ),
-      Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
-      ElevatedButton(onPressed: () {setState(() {_index = 1;});}, style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF813F0B)), key: Key("nameButton"), child: Text("Submit"))])),),
-
-    Container(padding: EdgeInsets.fromLTRB(20,375,20,0), child: Center(child: Column(children: [
-      Text("Enter your age", key: Key("ageText"),),
-      TextField(key: Key("ageTextField"), controller: _age, decoration: InputDecoration(border: OutlineInputBorder(),
+      Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 30)),
+      ElevatedButton(onPressed: () {setState(() {_index = 1;});}, 
+      style: ElevatedButton.styleFrom(backgroundColor: Color(0xFFF79802)), 
+      key: Key("nameButton"), child: Text("Submit")),
+      Container(child: Image.asset('assets/images/info1.0.png'), width: 300, height: 300,),])),),
+      //////////////////////////////////////////////////////////////////////////////////////////////
+      
+    ////////////////////////////////////// AGE /////////////////////////////////////////////////////
+    Container(padding: EdgeInsets.fromLTRB(20,200,20,0), child: Center(child: Column(children: [
+      Text("Enter Your Age", key: Key("ageText"), style: TextStyle(fontSize: 20)),
+      Padding(padding: EdgeInsets.fromLTRB(0, 50, 0, 0)),
+      TextField(key: Key("ageTextField"), 
+                controller: _age, 
+                decoration: InputDecoration(border: OutlineInputBorder(),
+                filled: true,
+                fillColor: Colors.white,
                 label: Text('Age',key: Key("ageLabel"),)),),
-      Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
-      ElevatedButton(onPressed: () {setState(() {_index = 2;});}, key: Key("ageButton"), child: Text("Submit"))])),), 
-
-    Container(padding: EdgeInsets.fromLTRB(20,375,20,0), child: Center(child: Column(children: [
-      Text("Enter your gender", key: Key("sexText"),),
-      TextField(key: Key("sexTextField"), controller: _sex, decoration: InputDecoration(border: OutlineInputBorder(),
+      Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 30)),
+      ElevatedButton(onPressed: () {setState(() {_index = 2;});},
+      style: ElevatedButton.styleFrom(backgroundColor: Color(0xFFF79802)),
+      key: Key("ageButton"), child: Text("Submit")),
+      Container(child: Image.asset('assets/images/info2.png'), width: 300, height: 300,),])),),
+      //////////////////////////////////////////////////////////////////////////////////////////////
+      
+    //////////////////////////////////////// SEX ////////////////////////////////////////////////////
+    Container(padding: EdgeInsets.fromLTRB(20,200,20,0), child: Center(child: Column(children: [
+      Text("Enter Your Sex", key: Key("sexText"), style: TextStyle(fontSize: 20)),
+      Padding(padding: EdgeInsets.fromLTRB(0, 50, 0, 0)),
+      TextField(key: Key("sexTextField"), 
+                controller: _sex, 
+                decoration: InputDecoration(border: OutlineInputBorder(),
+                filled: true,
+                fillColor: Colors.white,
                 label: Text('Sex',key: Key("sexLabel"),)),),
-      Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
-      ElevatedButton(onPressed: () {setState(() {_index = 3;});}, key: Key("sexButton"), child: Text("Submit"))]))), 
-    
-    Container(padding: EdgeInsets.fromLTRB(20,375,20,0), child: Center(child: Column(children: [
-      Text("Enter your weight", key: Key("weightText"),),
-      TextField(key: Key("weightTextField"), controller: _weight, decoration: InputDecoration(border: OutlineInputBorder(),
+      Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 30)),
+      ElevatedButton(onPressed: () {setState(() {_index = 3;});},
+      style: ElevatedButton.styleFrom(backgroundColor: Color(0xFFF79802)), 
+      key: Key("sexButton"), child: Text("Submit")),
+      Padding(padding: EdgeInsets.fromLTRB(0, 200, 0, 10)),
+      Container(child: Image.asset('assets/images/happyFlan.png'), width: 70, height: 70,)]))),
+      ////////////////////////////////////////////////////////////////////////////////////////////// 
+      
+    ///////////////////////////////////////// WEIGHT ///////////////////////////////////////////////
+    Container(padding: EdgeInsets.fromLTRB(20,200,20,0), child: Center(child: Column(children: [
+      Text("Enter Your Weight", key: Key("weightText"), style: TextStyle(fontSize: 20)),
+      Padding(padding: EdgeInsets.fromLTRB(0, 50, 0, 0)),
+      TextField(key: Key("weightTextField"), 
+                controller: _weight, 
+                decoration: InputDecoration(border: OutlineInputBorder(),
+                filled: true,
+                fillColor: Colors.white,
                 label: Text('Weight',key: Key("weightLabel"),)),),
-      Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
-      ElevatedButton(onPressed: () {setState(() {_index = 4;});}, key: Key("weightButton"), child: Text("Submit"))]))), 
+      Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 30)),
+      ElevatedButton(onPressed: () {setState(() {_index = 4;});},
+      style: ElevatedButton.styleFrom(backgroundColor: Color(0xFFF79802)),
+      key: Key("weightButton"), child: Text("Submit")),
+      Padding(padding: EdgeInsets.fromLTRB(0, 200, 0, 10)),
+      Container(child: Image.asset('assets/images/happyFlan.png'), width: 70, height: 70,)]))),
+      /////////////////////////////////////////////////////////////////////////////////////////////// 
     
-    Container(padding: EdgeInsets.fromLTRB(20,375,20,0), child: Center(child: Column(children: [
-      Text("Enter your height", key: Key("heightText"),),
-      TextField(key: Key("heightTextField"), controller: _height, decoration: InputDecoration(border: OutlineInputBorder(),
+    /////////////////////////////////////////// HEIGHT ////////////////////////////////////////////////
+    Container(padding: EdgeInsets.fromLTRB(20,200,20,0), child: Center(child: Column(children: [
+      Text("Enter Your Height", key: Key("heightText"), style: TextStyle(fontSize: 20)),
+      Padding(padding: EdgeInsets.fromLTRB(0, 50, 0, 0)),
+      TextField(key: Key("heightTextField"), 
+                controller: _height, 
+                decoration: InputDecoration(border: OutlineInputBorder(),
+                filled: true,
+                fillColor: Colors.white,
                 label: Text('Height',key: Key("heightLabel"),)),),
-      Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
-      ElevatedButton(onPressed: () {setState(() {_index = 5;});}, key: Key("heightButton"), child: Text("Submit"))]))), 
+      Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 30)),
+      ElevatedButton(onPressed: () {setState(() {_index = 5;});},
+      style: ElevatedButton.styleFrom(backgroundColor: Color(0xFFF79802)),
+      key: Key("heightButton"), child: Text("Submit")),
+      Padding(padding: EdgeInsets.fromLTRB(0, 200, 0, 10)),
+      Container(child: Image.asset('assets/images/happyFlan.png'), width: 70, height: 70,)]))),
+      ///////////////////////////////////////////////////////////////////////////////////////////////// 
     
-    Container(padding: EdgeInsets.fromLTRB(20,375,20,0), child: Center(child: Column(children: [
-      Text("Enter your budget", key: Key("budgetText"),),
-      TextField(key: Key("budgetTextField"), controller: _budget, decoration: InputDecoration(border: OutlineInputBorder(),
+    ////////////////////////////////////////// BUDGET //////////////////////////////////////////////////
+    Container(padding: EdgeInsets.fromLTRB(20,200,20,0), child: Center(child: Column(children: [
+      Text("Enter your budget", key: Key("budgetText"), style: TextStyle(fontSize: 20),),
+      Padding(padding: EdgeInsets.fromLTRB(0, 50, 0, 0)),
+      TextField(key: Key("budgetTextField"), 
+                controller: _budget, 
+                decoration: InputDecoration(border: OutlineInputBorder(),
+                filled: true,
+                fillColor: Colors.white,
                 label: Text('Budget',key: Key("budgetLabel"),)),),
-      Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
-      ElevatedButton(onPressed: () {setState(() {_index = 6;});}, key: Key("budgetButton"), child: Text("Submit"))]))),
+      Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 30)),
+      ElevatedButton(onPressed: () {setState(() {_index = 6;});},
+      style: ElevatedButton.styleFrom(backgroundColor: Color(0xFFF79802)),
+      key: Key("budgetButton"), child: Text("Submit")),
+      Padding(padding: EdgeInsets.fromLTRB(0, 200, 0, 10)),
+      Container(child: Image.asset('assets/images/happyFlan.png'), width: 70, height: 70,)]))),
+      //////////////////////////////////////////////////////////////////////////////////////////////////
                 
-    Container(padding: EdgeInsets.fromLTRB(20,375,20,0), child: Center(child: Column(children: [
-      Text("Select your time frame", key: Key("timeFrameText"),),
+    //////////////////////////////////////// TIME FRAME ////////////////////////////////////////////////
+    Container(padding: EdgeInsets.fromLTRB(20,200,20,0), child: Center(child: Column(children: [
+      Text("Select Your Time Frame", key: Key("timeFrameText"), style: TextStyle(fontSize: 20),),
       // TextField(key: Key("timeFrameTextField"), controller: _timeFrame, decoration: InputDecoration(border: OutlineInputBorder(),
       //           label: Text('Time Frame',key: Key("timeFrameLabel"),)),),
+      Padding(padding: EdgeInsets.fromLTRB(0, 50, 0, 0)),
       RadioListTile(
           title: const Text('1 Week'),
           value: selected1,
@@ -104,6 +168,7 @@ class _InfoScreenState extends State<InfoScreen> {
 
             });
           },
+          
       ),
       RadioListTile(
           title: const Text('2 Weeks'),
@@ -138,9 +203,12 @@ class _InfoScreenState extends State<InfoScreen> {
               selected2 = !value;
             });
           },
+          
       ),
+      
       Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
       ElevatedButton(key: Key("timeFrameButton"),
+      style: ElevatedButton.styleFrom(backgroundColor: Color(0xFFF79802)),
         onPressed: () async{
         DatabaseReference userInfo = FirebaseDatabase.instance.ref("profiles/${widget.user}");
           await userInfo.update({
@@ -153,12 +221,16 @@ class _InfoScreenState extends State<InfoScreen> {
             "Spent" : 0.0,
             "Time Frame" : _timeFrame,
             "firstLog" : false});
-        Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen(widget.user, widget.local), )).then((_) => navigateToMain());}, child: Text("Submit"))]))),            
+        Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen(widget.user, widget.local), )).then((_) => navigateToMain());}, child: Text("Submit")),
+        Padding(padding: EdgeInsets.fromLTRB(0, 100, 0, 10)),
+        Container(child: Image.asset('assets/images/happyFlan.png'), width: 70, height: 70,)]))),            
   ];
 
         return Scaffold(
-          backgroundColor: Color.fromARGB(255, 245, 182, 80),
-        body:Center(child: _widgets.elementAt(_index)),
+          backgroundColor: Colors.white,//Color.fromARGB(255, 245, 182, 80),
+          body:Center(child: _widgets.elementAt(_index)),
+          appBar: AppBar(backgroundColor: Color(0xFFF79802), centerTitle: true,
+          title: Text("Step 1"), titleTextStyle: TextStyle(fontFamily: 'Arial', fontSize: 20)),
       );
   }
 }
