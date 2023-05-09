@@ -96,8 +96,8 @@ void main() {
         
         await driver.tap(mainScreenButton);
         await driver.waitFor(find.byValueKey('tabs'));
-        //await driver.tap(find.text('Items'));
-        await driver.tap(itemsTab);
+        await driver.tap(find.text('Items'));
+        //await driver.tap(itemsTab);
 
         // Items screen section
         expect(await driver.getText(itemsScreenText), "Items");
@@ -263,8 +263,8 @@ void main() {
 
         await driver.tap(mainScreenButton);
         await driver.waitFor(find.byValueKey('tabs'));
-        //await driver.tap(find.text('Items'));
-        await driver.tap(itemsTab);
+        await driver.tap(find.text('Items'));
+        //await driver.tap(itemsTab);
         await driver.tap(itemsAdd0);
         await driver.tap(itemsScreenButton);
 
