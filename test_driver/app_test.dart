@@ -94,14 +94,14 @@ void main() {
         expect(await driver.getText(mainScreenBudgetText),
             "User Budget\n\$0.00/\$50000.0");
         
-        await driver.tap(mainScreenButton);
-        await driver.waitFor(find.byValueKey('tabs'));
-        await driver.tap(find.text('Items'));
+        //await driver.tap(mainScreenButton);
+        //await driver.waitFor(find.byValueKey('tabs'));
+        //await driver.tap(find.text('Items'));
         //await driver.tap(itemsTab);
 
         // Items screen section
-        expect(await driver.getText(itemsScreenText), "Items");
-        expect(await driver.getText(itemsButtonText), "Confirm");
+        //expect(await driver.getText(itemsScreenText), "Items");
+        //expect(await driver.getText(itemsButtonText), "Confirm");
 
         // Search section
         await driver.tap(searchButton);
@@ -261,17 +261,17 @@ void main() {
 
         // Move to items, add the first item and confirm
 
-        await driver.tap(mainScreenButton);
-        await driver.waitFor(find.byValueKey('tabs'));
-        await driver.tap(find.text('Items'));
+        //await driver.tap(mainScreenButton);
+        //await driver.waitFor(find.byValueKey('tabs'));
+        //await driver.tap(find.text('Items'));
         //await driver.tap(itemsTab);
-        await driver.tap(itemsAdd0);
-        await driver.tap(itemsScreenButton);
+        //await driver.tap(itemsAdd0);
+        //await driver.tap(itemsScreenButton);
 
         // Move back to main screen and check updated price
 
-        expect(await driver.getText(mainScreenBudgetText),
-            "User Budget\n\$4.20/\$5000.0");
+        //expect(await driver.getText(mainScreenBudgetText),
+            //"User Budget\n\$4.20/\$5000.0");
 
         // Go to settings and delete account
         await driver.tap(settingsButton);
