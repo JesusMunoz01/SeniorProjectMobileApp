@@ -731,6 +731,7 @@ class _MainScreenState extends State<MainScreen> {
         ),
         body:Center(child: _widgets.elementAt(_index)),
         bottomNavigationBar: BottomNavigationBar(
+          key: Key("tabs"),
           selectedIconTheme: IconThemeData(color: Colors.black),
           selectedLabelStyle: TextStyle(color: Colors.black),
           selectedItemColor: Colors.black,
@@ -749,7 +750,6 @@ class _MainScreenState extends State<MainScreen> {
               label: 'Meals',
             ),
           ],
-          key: Key('tabs'),
           currentIndex: _index,
           onTap: (int value) {
             setState(() {

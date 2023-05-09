@@ -42,6 +42,7 @@ void main() {
         final mainScreenBudgetText = find.byValueKey("budgetText");
         final mainScreenButton = find.byValueKey("mainScreenButton");
         final mainScreenButtonText = find.byValueKey("buttonText");
+        final tab = find.byValueKey('tabs');
         final homeTab = find.byValueKey('homeTab');
         final itemsTab = find.byValueKey('itemsTab');
         final mealTab = find.byValueKey('mealTab');
@@ -94,6 +95,8 @@ void main() {
             "User Budget\n\$0.00/\$50000.0");
         
         await driver.tap(mainScreenButton);
+        //await driver.waitFor(find.byValueKey('tabs'));
+        //await driver.tap(find.text('Items'));
         await driver.tap(itemsTab);
 
         // Items screen section
@@ -167,6 +170,7 @@ void main() {
         final mainScreenBudgetText = find.byValueKey("budgetText");
         final mainScreenButton = find.byValueKey("mainScreenButton");
         final mainScreenButtonText = find.byValueKey("buttonText");
+        final tabs = find.byValueKey('tabs');
         final homeTab = find.byValueKey('homeTab');
         final itemsTab = find.byValueKey('itemsTab');
         final mealTab = find.byValueKey('mealTab');
@@ -258,6 +262,8 @@ void main() {
         // Move to items, add the first item and confirm
 
         await driver.tap(mainScreenButton);
+        //await driver.waitFor(find.byValueKey('tabs'));
+        //await driver.tap(find.text('Items'));
         await driver.tap(itemsTab);
         await driver.tap(itemsAdd0);
         await driver.tap(itemsScreenButton);
