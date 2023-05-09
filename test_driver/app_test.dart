@@ -43,11 +43,27 @@ void main() {
         final mainScreenButton = find.byValueKey("mainScreenButton");
         final mainScreenButtonText = find.byValueKey("buttonText");
         final tab = find.byValueKey('tabs');
+        final homeTab = find.byValueKey('homeTab');
+        final itemsTab = find.byValueKey('itemsTab');
+        final mealTab = find.byValueKey('mealTab');
 
         // Items Screen (Items tab)
         final itemsScreenText = find.byValueKey("itemsMainText");
         final itemsScreenButton = find.byValueKey("itemsScreenButton");
         final itemsButtonText = find.byValueKey("itemsButtonText");
+
+        // Search section
+        final searchButton = find.byValueKey("searchButton");
+        final searchBack = find.byValueKey("returnSearch");
+
+        // Settings
+        final personalText = find.byValueKey("personalText");
+        final settingsText = find.byValueKey("settingsText");
+        final budgetText = find.byValueKey("budgetTextSet");
+        final logoutText = find.byValueKey("logoutText");
+        final deleteText = find.byValueKey("deleteText");
+        final settingsButton = find.byValueKey("settingsButton");
+        final logoutButton = find.byValueKey("logoutButton");
 
         // Check login screen and use test account for logging to the app
         //expect(await driver.getText(screenTwoTestText), "Login");
@@ -58,10 +74,10 @@ void main() {
 
         // Move to create account, check info, move back
         await driver.tap(createAccButton);
-        expect(await driver.getText(createAccScreenText), "Create an Account");
+        expect(await driver.getText(createAccScreenText), "Create \nNew \nAccount!!!");
         expect(await driver.getText(createUsernameFieldTxt), "Username");
         expect(await driver.getText(createPasswordFieldTxt), "Password");
-        expect(await driver.getText(submitText), "Submit");
+        expect(await driver.getText(submitText), "Create Account");
         await driver.tap(submitButton);
         await driver.tap(createAccBackButton);
 
@@ -74,31 +90,35 @@ void main() {
 
         // Main screen section
         expect(await driver.getText(mainScreenText), "Favorites");
-        expect(await driver.getText(mainScreenButtonText), "Test");
+        expect(await driver.getText(mainScreenButtonText), "Confirm");
         expect(await driver.getText(mainScreenBudgetText),
             "User Budget\n\$0.00/\$50000.0");
         
-        
-        //await driver.scrollIntoView(mainScreenButton);
         //await driver.tap(mainScreenButton);
-        //await driver.waitFor(tab);
-        //await driver.tap(find.text('Home'));
+        //await driver.waitFor(find.byValueKey('tabs'));
         //await driver.tap(find.text('Items'));
+        //await driver.tap(itemsTab);
 
         // Items screen section
         //expect(await driver.getText(itemsScreenText), "Items");
-        //expect(await driver.getText(itemsButtonText), "Add");
+        //expect(await driver.getText(itemsButtonText), "Confirm");
 
-        //await driver.scrollIntoView(itemsScreenButton);
-        //await driver.tap(itemsScreenButton);
+        // Search section
+        await driver.tap(searchButton);
+        await driver.tap(searchBack);
+
+        // Settings section
+        await driver.tap(settingsButton);
+
+        expect(await driver.getText(settingsText), "Settings");
+        expect(await driver.getText(personalText), "Personal Info");
+        expect(await driver.getText(budgetText), "Budget");
+        expect(await driver.getText(logoutText), "Logout");
+        expect(await driver.getText(deleteText), "Delete Account");
+
+        await driver.tap(logoutText);
         
-      } ,skip: true);
-
-      //Logged in path
-      test("template test", () async {
-        final testVariable = find.byValueKey('templateKey');
-        expect(await driver.getText(testVariable), "Template");
-      }, skip: true);
+      } ,);
 
       // Not Logged in path
       test("Create account, move screens, and delete account", () async {
@@ -141,7 +161,7 @@ void main() {
         final budgetField = find.byValueKey("budgetTextField");
         final budgetText = find.byValueKey("budgetText");
         final budgetButton = find.byValueKey("budgetButton");
-        final timeField = find.byValueKey("timeFrameTextField");
+        final option2 = find.byValueKey("option2");
         final timeText = find.byValueKey("timeFrameText");
         final timeButton = find.byValueKey("timeFrameButton");
 
@@ -150,12 +170,24 @@ void main() {
         final mainScreenBudgetText = find.byValueKey("budgetText");
         final mainScreenButton = find.byValueKey("mainScreenButton");
         final mainScreenButtonText = find.byValueKey("buttonText");
-        final tab = find.byValueKey('tabs');
+        final tabs = find.byValueKey('tabs');
+        final homeTab = find.byValueKey('homeTab');
+        final itemsTab = find.byValueKey('itemsTab');
+        final mealTab = find.byValueKey('mealTab');
 
         // Items Screen (Items tab)
         final itemsScreenText = find.byValueKey("itemsMainText");
         final itemsScreenButton = find.byValueKey("itemsScreenButton");
         final itemsButtonText = find.byValueKey("itemsButtonText");
+        final itemsAdd0 = find.byValueKey("itemAdd0");
+
+        // Search section
+        final searchButton = find.byValueKey("searchButton");
+        final searchBack = find.byValueKey("returnSearch");
+
+        // Settings
+        final settingsButton = find.byValueKey("settingsButton");
+        final deleteButton = find.byValueKey("deleteButton");
 
         // Check login screen and use test account for logging to the app
         //expect(await driver.getText(screenTwoTestText), "Login");
@@ -166,10 +198,10 @@ void main() {
 
         // Move to create account, enter info, submit
         await driver.tap(createAccButton);
-        expect(await driver.getText(createAccScreenText), "Create an Account");
+        expect(await driver.getText(createAccScreenText), "Create \nNew \nAccount!!!");
         expect(await driver.getText(createUsernameFieldTxt), "Username");
         expect(await driver.getText(createPasswordFieldTxt), "Password");
-        expect(await driver.getText(submitText), "Submit");
+        expect(await driver.getText(submitText), "Create Account");
 
         await driver.tap(createUsernameField);
         await driver.enterText("TestAccount3");
@@ -185,62 +217,66 @@ void main() {
         await driver.tap(screenTwoLoginButton);
 
         // First login, enter info screen before main screen
-        expect(await driver.getText(nameText), "Enter your name");
+        expect(await driver.getText(nameText), "Enter Your Name");
         await driver.tap(nameField);
         await driver.enterText("Tester");
         await driver.tap(nameButton);
 
-        expect(await driver.getText(ageText), "Enter your age");
+        expect(await driver.getText(ageText), "Enter Your Age");
         await driver.tap(ageField);
         await driver.enterText("21");
         await driver.tap(ageButton);
 
-        expect(await driver.getText(sexText), "Enter your gender");
+        expect(await driver.getText(sexText), "Enter Your Sex");
         await driver.tap(sexField);
         await driver.enterText("Male");
         await driver.tap(sexButton);
 
-        expect(await driver.getText(weightText), "Enter your weight");
+        expect(await driver.getText(weightText), "Enter Your Weight");
         await driver.tap(weightField);
         await driver.enterText("160");
         await driver.tap(weightButton);
 
-        expect(await driver.getText(heightText), "Enter your height");
+        expect(await driver.getText(heightText), "Enter Your Height");
         await driver.tap(heightField);
         await driver.enterText("5'11");
         await driver.tap(heightButton);
 
-        expect(await driver.getText(budgetText), "Enter your budget");
+        expect(await driver.getText(budgetText), "Enter Your Budget");
         await driver.tap(budgetField);
         await driver.enterText("5000");
         await driver.tap(budgetButton);
 
-        expect(await driver.getText(timeText), "Enter your time frame");
-        await driver.tap(timeField);
+        expect(await driver.getText(timeText), "Select Your Time Frame");
+        await driver.tap(option2);
         await driver.enterText("Monthly");
         await driver.tap(timeButton);
 
 
         // Main screen section
         expect(await driver.getText(mainScreenText), "Favorites");
-        expect(await driver.getText(mainScreenButtonText), "Test");
+        expect(await driver.getText(mainScreenButtonText), "Confirm");
         expect(await driver.getText(mainScreenBudgetText),
-            "User Budget\n\$${5000}");
-        
-        
-        //await driver.scrollIntoView(mainScreenButton);
+            "User Budget\n\$0.00/\$5000.0");
+
+        // Move to items, add the first item and confirm
+
         //await driver.tap(mainScreenButton);
-        //await driver.waitFor(tab);
-        //await driver.tap(find.text('Home'));
+        //await driver.waitFor(find.byValueKey('tabs'));
         //await driver.tap(find.text('Items'));
-
-        // Items screen section
-        //expect(await driver.getText(itemsScreenText), "Items");
-        //expect(await driver.getText(itemsButtonText), "Add");
-
-        //await driver.scrollIntoView(itemsScreenButton);
+        //await driver.tap(itemsTab);
+        //await driver.tap(itemsAdd0);
         //await driver.tap(itemsScreenButton);
-      }, skip: true);
+
+        // Move back to main screen and check updated price
+
+        //expect(await driver.getText(mainScreenBudgetText),
+            //"User Budget\n\$4.20/\$5000.0");
+
+        // Go to settings and delete account
+        await driver.tap(settingsButton);
+        await driver.tap(deleteButton);
+      },);
     });
   });
 }

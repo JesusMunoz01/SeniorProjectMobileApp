@@ -129,7 +129,7 @@ class _InfoScreenState extends State<InfoScreen> {
     
     ////////////////////////////////////////// BUDGET //////////////////////////////////////////////////
     Container(padding: EdgeInsets.fromLTRB(20,200,20,0), child: Center(child: Column(children: [
-      Text("Enter your budget", key: Key("budgetText"), style: TextStyle(fontSize: 20),),
+      Text("Enter Your Budget", key: Key("budgetText"), style: TextStyle(fontSize: 20),),
       Padding(padding: EdgeInsets.fromLTRB(0, 50, 0, 0)),
       TextField(key: Key("budgetTextField"), 
                 controller: _budget, 
@@ -171,6 +171,7 @@ class _InfoScreenState extends State<InfoScreen> {
           
       ),
       RadioListTile(
+          key: Key("option2"),
           title: const Text('2 Weeks'),
           value: selected2,
           groupValue: _check,
@@ -227,6 +228,7 @@ class _InfoScreenState extends State<InfoScreen> {
   ];
 
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: Colors.white,//Color.fromARGB(255, 245, 182, 80),
           body:Center(child: _widgets.elementAt(_index)),
           appBar: AppBar(backgroundColor: Color(0xFFF79802), centerTitle: true,
