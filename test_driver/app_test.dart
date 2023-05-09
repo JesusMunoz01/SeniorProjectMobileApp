@@ -95,7 +95,7 @@ void main() {
             "User Budget\n\$0.00/\$50000.0");
         
         await driver.tap(mainScreenButton);
-        //await driver.waitFor(find.byValueKey('tabs'));
+        await driver.waitFor(find.byValueKey('tabs'));
         //await driver.tap(find.text('Items'));
         await driver.tap(itemsTab);
 
@@ -262,7 +262,7 @@ void main() {
         // Move to items, add the first item and confirm
 
         await driver.tap(mainScreenButton);
-        //await driver.waitFor(find.byValueKey('tabs'));
+        await driver.waitFor(find.byValueKey('tabs'));
         //await driver.tap(find.text('Items'));
         await driver.tap(itemsTab);
         await driver.tap(itemsAdd0);
